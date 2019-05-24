@@ -22,7 +22,7 @@ EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (483, 700)  # height, width
 N_CLASSES = 196
 LR_START = 0.01
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
