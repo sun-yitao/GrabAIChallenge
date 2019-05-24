@@ -17,9 +17,9 @@ from random_eraser import get_random_eraser
 from adabound import AdaBound
 
 
-MODEL_NAME = 'SEResNext'
+MODEL_NAME = 'Xception_Imagenet'
 EPOCHS = 200  # only for calculation of lr decay
-IMAGE_SIZE = (483, 700)  # height, width
+IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
 N_CLASSES = 196
 LR_START = 0.01
 BATCH_SIZE = 32
@@ -62,7 +62,7 @@ def get_model():
     input_tensor = Input(shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3))
     base_model = Xception(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
                           include_top=False,
-                          weights=None,
+                          weights='imagenet',
                           input_tensor=input_tensor,
                           pooling='avg',
                           classes=N_CLASSES)
