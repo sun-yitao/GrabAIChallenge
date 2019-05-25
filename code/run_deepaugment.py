@@ -27,7 +27,7 @@ my_config = {
     "model": "basiccnn",
     'train_set_size': int(TRAIN_SET_SIZE*0.75),
     'child_epochs': 60,
-    "child_batch_size": 64,
+    "child_batch_size": 32,
 }
 
 def get_input_data_generator():
