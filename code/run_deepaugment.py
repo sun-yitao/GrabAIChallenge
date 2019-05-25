@@ -24,7 +24,7 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'wrn_28_10',
+    'model': 'wrn_20_2',
     'train_set_size': int(TRAIN_SET_SIZE*0.75),
     'child_epochs': 60,
     'child_batch_size': 64,
