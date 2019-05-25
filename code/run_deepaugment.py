@@ -24,11 +24,11 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'wrn_16_2',
+    'model': 'basiccnn',
     'train_set_size': int(TRAIN_SET_SIZE*0.75),
     'child_epochs': 60,
-    'child_batch_size': 64,
-    'opt_samples': 1,
+    'child_batch_size': 128,
+    'opt_samples': 2,
 }
 
 def get_input_data_generator():
