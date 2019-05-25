@@ -13,8 +13,8 @@ cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
 TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'test'
-IMAGE_SIZE = (363, 525)
-TRAIN_SET_SIZE = 2000
+IMAGE_SIZE = (180, 260)
+TRAIN_SET_SIZE = 3000
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -27,7 +27,7 @@ my_config = {
     "model": "basiccnn",
     'train_set_size': int(TRAIN_SET_SIZE*0.75),
     'child_epochs': 60,
-    "child_batch_size": 32,
+    "child_batch_size": 64,
 }
 
 def get_input_data_generator():
