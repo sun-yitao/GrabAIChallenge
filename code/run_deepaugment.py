@@ -49,5 +49,5 @@ if __name__ == '__main__':
     train = get_input_data_generator()
     x_train, y_train = train.next()
     deepaug = DeepAugment(images=x_train, labels=y_train.reshape(TRAIN_SET_SIZE, 1), config=my_config)
-    best_policies = deepaug.optimize(300)
+    best_policies = deepaug.optimize(150)
     best_policies.to_csv('best_augment_policies.csv')
