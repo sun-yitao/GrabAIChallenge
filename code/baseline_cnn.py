@@ -115,8 +115,8 @@ def get_callbacks():
 
 if __name__ == '__main__':
     train, test = get_input_data_generators()
-    #model = get_model()
-    model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
+    model = get_model()
+    #model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
     callbacks = get_callbacks()
     class_weights = compute_class_weight(
         'balanced', np.arange(0, N_CLASSES), train.classes)
