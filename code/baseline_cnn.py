@@ -21,7 +21,7 @@ MODEL_NAME = 'Xception_Imagenet'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
 N_CLASSES = 196
-LR_START = 0.01
+LR_FINAL = 0.01
 BATCH_SIZE = 16
 
 cwd = Path.cwd()
@@ -71,9 +71,9 @@ def get_model():
     x = base_model.output
     predictions = Dense(N_CLASSES, activation='softmax')(x)
     model = keras.models.Model(inputs=base_model.input, outputs=predictions)
-    decay = LR_START / EPOCHS
+    decay = LR_FINAL / EPOCHS
     optm = AdaBound(lr=0.001,
-                    final_lr=0.01,
+                    final_lr=LR_FINAL,
                     gamma=1e-03,
                     weight_decay=decay,
                     amsbound=False)
@@ -92,8 +92,9 @@ def load_model(model_path):
     f1_score = km.categorical_f1_score()
     model = keras.models.load_model(model_path, custom_objects={
                                     'AdaBound': AdaBound, 'categorical_precision': precision, 'categorical_recall': recall, 'categorical_f1_score': f1_score})
+    decay = LR_FINAL / EPOCHS
     optm = AdaBound(lr=0.001,
-                    final_lr=0.01,
+                    final_lr=LR_FINAL,
                     gamma=1e-03,
                     weight_decay=decay,
                     amsbound=False)
