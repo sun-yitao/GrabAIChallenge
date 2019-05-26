@@ -98,9 +98,6 @@ def load_model(model_path):
                     gamma=1e-03,
                     weight_decay=decay,
                     amsbound=False)
-    model.compile(optimizer=optm,
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy', precision, recall, f1_score])
     return model
 
 
