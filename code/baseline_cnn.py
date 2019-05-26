@@ -19,7 +19,7 @@ from lib.adabound import AdaBound
 
 MODEL_NAME = 'Xception_Imagenet'
 EPOCHS = 200  # only for calculation of lr decay
-IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
+IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
 N_CLASSES = 196
 LR_FINAL = 0.01
 BATCH_SIZE = 16
