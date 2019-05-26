@@ -24,6 +24,8 @@ We added new data from google images using the script code/g_images_download.py
 
 Some of these new images do not contain relevant data, we cleaned around 25 image folders manually and fine-tuned a pretrained Xception to classify these new images as wanted or unwanted. We used this model to help us clean the rest of the data using code/predict_unwanted_images.py
 
+The new data is also cleaned manually as there are some wrongly classified images eg: convertible vs coupe, Dodge Challenger vs Dodge Charger SRT.
+
 
 
 ## Augmentation
@@ -39,7 +41,7 @@ deepaugment
 | Model Name                                                    | Training Accuracy | Validation Accuracy | Validation Precision | Validation Recall | Validation F1 Score |
 | ------------------------------------------------------------- | ----------------- | ------------------- | -------------------- | ----------------- | ------------------- |
 | CNN Baseline with Xception, random cutout, adabound optimiser | 0.9811            | 0.9366              | 1.0000               | 0.9091            | 0.9524              |
-|                                                               |                   |                     |                      |                   |                     |
+| Weakly Supervised Data Augmentation Network                   | 99.76             | 91.28               |                      |                   |                     |
 |                                                               |                   |                     |                      |                   |                     |
 |                                                               |                   |                     |                      |                   |                     |
 |                                                               |                   |                     |                      |                   |                     |

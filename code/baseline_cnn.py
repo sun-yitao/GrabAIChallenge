@@ -12,24 +12,24 @@ from keras.applications.xception import Xception
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 
-from se_inception_resnet_v2 import SEInceptionResNetV2
-from random_eraser import get_random_eraser
-from adabound import AdaBound
+from lib.se_inception_resnet_v2 import SEInceptionResNetV2
+from lib.random_eraser import get_random_eraser
+from lib.adabound import AdaBound
 
 
 MODEL_NAME = 'Xception_Imagenet'
-EPOCHS = 200  # only for calculation of lr decay
-IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
+EPOCHS = 200 # only for calculation of lr decay
+IMAGE_SIZE = (363, 525) # height, width, avg is 483, 700
 N_CLASSES = 196
 LR_START = 0.01
 BATCH_SIZE = 16
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
-TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
-TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'test'
-CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn' / MODEL_NAME
-LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn' / MODEL_NAME
+TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data_new_data_in_train' / 'train'
+TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data_new_data_in_train' / 'test'
+CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn_new_data' / MODEL_NAME
+LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn_new_data' / MODEL_NAME
 
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -42,7 +42,7 @@ K.set_session(session)
 
 def get_input_data_generators():
     # preprocessing function executes before rescale
-    train_datagen = ImageDataGenerator(rotation_range=0, width_shift_range=0.2,
+    train_datagen = ImageDataGenerator(rotation_range=5, width_shift_range=0.2,
                                        height_shift_range=0.2, brightness_range=(0.8, 1.2),
                                        shear_range=0.1, zoom_range=0.2,
                                        channel_shift_range=0.2,
@@ -104,4 +104,5 @@ if __name__ == '__main__':
         'balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
-                        callbacks=callbacks, class_weight=class_weights)
+                        callbacks=callbacks, class_weight=class_weights,
+                        workers=cpu_count(), use_multiprocessing=True)

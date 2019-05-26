@@ -7,7 +7,7 @@ from glob import glob
 
 SEED = 448
 cwd = Path.cwd()
-data_dir = cwd.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
+data_dir = cwd.parent.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
 train_dir = data_dir / 'train'
 test_dir = data_dir / 'test'
 

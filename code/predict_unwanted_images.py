@@ -13,8 +13,8 @@ from keras.applications.xception import Xception
 from keras.preprocessing.image import load_img, img_to_array
 from keras import backend as K
 
-from random_eraser import get_random_eraser
-from adabound import AdaBound
+from lib.random_eraser import get_random_eraser
+from lib.adabound import AdaBound
 
 """
 Iterates through new dataset from google images and predicts if images are wanted or unwanted

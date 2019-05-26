@@ -4,7 +4,7 @@ from google_images_download import google_images_download
 
 
 cwd = Path.cwd()
-data_dir = cwd.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
+data_dir = cwd.parent.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
 output_dir = data_dir / 'new_data'
 os.makedirs(str(output_dir), exist_ok=True)
 response = google_images_download.googleimagesdownload()

@@ -11,7 +11,7 @@ from keras.applications.xception import Xception
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 
-from random_eraser import get_random_eraser
+from lib.random_eraser import get_random_eraser
 
 
 """

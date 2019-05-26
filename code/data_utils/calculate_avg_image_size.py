@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 
 cwd = Path.cwd()
-data_dir = cwd.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
+data_dir = cwd.parent.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data'
 img_paths = glob(str(data_dir / '**' / '*.jpg'), recursive=True)
 img_sizes = np.empty((len(img_paths),2))
 for n, img_path in enumerate(tqdm(img_paths)):
