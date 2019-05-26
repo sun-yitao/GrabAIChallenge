@@ -23,7 +23,7 @@ from keras.engine.topology import get_source_inputs
 from keras_applications.imagenet_utils import _obtain_input_shape
 import keras.backend as K
 
-from se import squeeze_excite_block
+from lib.se import squeeze_excite_block
 
 CIFAR_TH_WEIGHTS_PATH = ''
 CIFAR_TF_WEIGHTS_PATH = ''

@@ -37,7 +37,7 @@ from keras_applications.imagenet_utils import _obtain_input_shape
 from keras_applications.imagenet_utils import decode_predictions
 from keras import backend as K
 
-from se import squeeze_excite_block
+from lib.se import squeeze_excite_block
 
 
 def preprocess_input(x):
