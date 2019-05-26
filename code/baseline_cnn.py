@@ -64,7 +64,7 @@ def get_model():
     input_tensor = Input(shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3))
     base_model = Xception(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
                           include_top=False,
-                          weights='imagenet',
+                          weights=None,
                           input_tensor=input_tensor,
                           pooling='avg',
                           classes=N_CLASSES)
