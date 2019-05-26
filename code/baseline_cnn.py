@@ -18,16 +18,18 @@ from lib.adabound import AdaBound
 
 
 MODEL_NAME = 'Xception_Imagenet'
-EPOCHS = 200 # only for calculation of lr decay
-IMAGE_SIZE = (363, 525) # height, width, avg is 483, 700
+EPOCHS = 200  # only for calculation of lr decay
+IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
 N_CLASSES = 196
 LR_START = 0.01
 BATCH_SIZE = 16
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
-TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data_new_data_in_train' / 'train'
-TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data_new_data_in_train' / 'test'
+TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
+    'car_data_new_data_in_train' / 'train'
+TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
+    'car_data_new_data_in_train' / 'test'
 CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn_new_data' / MODEL_NAME
 LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn_new_data' / MODEL_NAME
 
@@ -84,6 +86,23 @@ def get_model():
     return model
 
 
+def load_model(model_path):
+    precision = km.categorical_precision()
+    recall = km.categorical_recall()
+    f1_score = km.categorical_f1_score()
+    model = keras.models.load_model(model_path, custom_objects={
+                                    'AdaBound': AdaBound, 'categorical_precision': precision, 'categorical_recall': recall, 'categorical_f1_score': f1_score})
+    optm = AdaBound(lr=0.001,
+                    final_lr=0.01,
+                    gamma=1e-03,
+                    weight_decay=decay,
+                    amsbound=False)
+    model.compile(optimizer=optm,
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy', precision, recall, f1_score])
+    return model
+
+
 def get_callbacks():
     os.makedirs(CHECKPOINT_PATH, exist_ok=True)
     ckpt = keras.callbacks.ModelCheckpoint(os.path.join(CHECKPOINT_PATH, 'model.{epoch:02d}-{val_acc:.2f}.h5'),
@@ -98,7 +117,8 @@ def get_callbacks():
 
 if __name__ == '__main__':
     train, test = get_input_data_generators()
-    model = get_model()
+    #model = get_model()
+    model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
     callbacks = get_callbacks()
     class_weights = compute_class_weight(
         'balanced', np.arange(0, N_CLASSES), train.classes)

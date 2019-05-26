@@ -47,7 +47,10 @@ def get_input_data_generator_from_csv(csv_path, test_directory=None, x_col='file
 
 
 if __name__ == '__main__':
+    precision = km.categorical_precision()
+    recall = km.categorical_recall()
+    f1_score = km.categorical_f1_score()
     model = keras.models.load_model(
-        MODEL_PATH, custom_objects={'AdaBound': AdaBound})
+        MODEL_PATH, custom_objects={'AdaBound': AdaBound, 'categorical_precision': precision, 'categorical_recall': recall, 'categorical_f1_score': f1_score})
     test = get_input_data_generators_from_directory('/Users/sunyitao/Documents/Projects/ML_Projects/GrabAIChallenge/data/stanford-car-dataset-by-classes-folder/car_data/new_data_cleaned', batch_size=32)
     model.evaluate_generator(test, steps=len(test), verbose=1)
