@@ -44,7 +44,7 @@ K.set_session(session)
 
 def get_input_data_generators():
     # preprocessing function executes before rescale
-    train_datagen = ImageDataGenerator(rotation_range=5, width_shift_range=0.2,
+    train_datagen = ImageDataGenerator(rotation_range=0, width_shift_range=0.2,
                                        height_shift_range=0.2, brightness_range=(0.8, 1.2),
                                        shear_range=0.1, zoom_range=0.2,
                                        channel_shift_range=0.2,
