@@ -24,12 +24,12 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'basiccnn',
+    'model': 'wrn_40_2',
     'train_set_size': 2000,
-    'child_epochs': 50,
+    'child_epochs': 30,
     'child_batch_size': 64,
     'opt_samples': 2,
-    'child_first_train_epochs': 20,
+    'child_first_train_epochs': 0,
     'pre_aug_weights_path': 'pre_aug_weights.h5',
     'notebook_path': 'notebook.csv',
 }
