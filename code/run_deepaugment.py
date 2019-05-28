@@ -24,7 +24,7 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'wrn_40_2',
+    'model': 'wrn_28_2',
     'train_set_size': 2000,
     'child_epochs': 30,
     'child_batch_size': 64,
@@ -51,5 +51,5 @@ if __name__ == '__main__':
     train = get_input_data_generator()
     x_train, y_train = train.next()
     deepaug = DeepAugment(images=x_train, labels=y_train.reshape(TRAIN_SET_SIZE, 1), config=my_config)
-    best_policies = deepaug.optimize(150)
+    best_policies = deepaug.optimize(100)
     best_policies.to_csv('best_augment_policies.csv')
