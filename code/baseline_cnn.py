@@ -122,4 +122,4 @@ if __name__ == '__main__':
         'balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
-                        callbacks=callbacks, class_weight=class_weights)
+                        callbacks=callbacks)
