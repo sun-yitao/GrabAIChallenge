@@ -13,7 +13,7 @@ cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
 TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'test'
-IMAGE_SIZE = (196, 280)
+IMAGE_SIZE = (156, 224)
 TRAIN_SET_SIZE = 3000
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
