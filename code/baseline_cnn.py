@@ -17,7 +17,7 @@ from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
 
-MODEL_NAME = 'Xception_Imagenet'
+MODEL_NAME = 'Xception_Imagenet_no_classweight'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
 N_CLASSES = 196
