@@ -11,6 +11,7 @@ from deepaugment.deepaugment import DeepAugment
 import sys
 sys.path.append(str(Path.cwd() / 'lib'))
 from effnet import Effnet
+from random_eraser import get_random_eraser
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
@@ -31,7 +32,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 my_config = {
     'model': model,
-    'train_set_size': DATASET_SIZE - 1000,
+    'train_set_size': int(DATASET_SIZE * 0.7),
     'child_epochs': 30,
     'child_batch_size': 128,
     'opt_samples': 1,
