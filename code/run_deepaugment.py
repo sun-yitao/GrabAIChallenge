@@ -28,7 +28,7 @@ K.set_session(session)
 model = Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196)
 model.compile(optimizer='adam',
               loss='categorical_crossentropy',
-              metrics='accuracy')
+              metrics=['accuracy'])
 my_config = {
     'model': model,
     'train_set_size': DATASET_SIZE - 1000,
