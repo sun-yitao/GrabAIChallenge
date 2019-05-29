@@ -1,5 +1,6 @@
 from keras.models import Model
 from keras import layers
+from keras.regularizers import l2
 
 
 def get_post(x_in):
@@ -41,7 +42,7 @@ def get_block(x_in, ch_in, ch_out, regularizer):
     return x
 
 
-def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=1e-4):
+def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=l2(1e-4)):
     x_in = layers.Input(shape=input_shape)
 
     x = get_block(x_in, 32, 64, regularizer)
