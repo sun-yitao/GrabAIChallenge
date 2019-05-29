@@ -45,6 +45,9 @@ def get_input_data_generator():
 if __name__ == '__main__':
     train = get_input_data_generator()
     x_train, y_train = train.next()
-    deepaug = DeepAugment(images=x_train, labels=y_train.reshape(DATASET_SIZE, 1), config=my_config)
+    unique, counts = np.unique(y_train, return_counts=True)
+    print(dict(zip(unique, counts)))
+    y_train = y_train.reshape(DATASET_SIZE, 1)
+    deepaug = DeepAugment(images=x_train, labels=y_train, config=my_config)
     best_policies = deepaug.optimize(150)
     best_policies.to_csv('best_augment_policies.csv')
