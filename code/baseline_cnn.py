@@ -17,7 +17,7 @@ from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
 
-MODEL_NAME = 'Xception_Imagenet_classweight'
+MODEL_NAME = 'Xception_Imagenet_no_classweight'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
 N_CLASSES = 196
@@ -121,4 +121,4 @@ if __name__ == '__main__':
     class_weights = compute_class_weight('balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
-                        callbacks=callbacks, class_weight=class_weights)
+                        callbacks=callbacks)
