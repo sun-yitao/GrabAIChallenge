@@ -8,9 +8,7 @@ import keras
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 from deepaugment.deepaugment import DeepAugment
-import sys
-print(sys.path)
-from lib.effnet import Effnet
+import lib.effnet
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
@@ -26,7 +24,7 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196),
+    'model': lib.effnet.Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196),
     'train_set_size': DATASET_SIZE - 1000,
     'child_epochs': 30,
     'child_batch_size': 256,
