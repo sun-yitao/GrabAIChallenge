@@ -33,10 +33,10 @@ model.compile(optimizer='adam',
 my_config = {
     'model': model,
     'train_set_size': int(DATASET_SIZE * 0.7),
-    'child_epochs': 30,
+    'child_epochs': 40,
     'child_batch_size': 128,
     'opt_samples': 1,
-    'child_first_train_epochs': 0,
+    'child_first_train_epochs': 30,
     'pre_aug_weights_path': 'pre_aug_weights.h5',
     'notebook_path': 'notebook.csv',
 }
