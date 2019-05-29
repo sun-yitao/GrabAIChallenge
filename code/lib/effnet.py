@@ -51,7 +51,7 @@ def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=
 
     if include_top:
         x = layers.Flatten()(x)
-        x = layers.Dense(nb_classes, activation='softmax')(x)
+        x = layers.Dense(nb_classes, activation='softmax', kernel_regularizer=regularizer)(x)
 
     model = Model(inputs=x_in, outputs=x)
 
