@@ -9,6 +9,8 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 from deepaugment.deepaugment import DeepAugment
 
+from lib.effnet import Effnet
+
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
@@ -23,10 +25,10 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'basiccnn',
+    'model': Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196),
     'train_set_size': DATASET_SIZE - 1000,
     'child_epochs': 30,
-    'child_batch_size': 128,
+    'child_batch_size': 256,
     'opt_samples': 1,
     'child_first_train_epochs': 0,
     'pre_aug_weights_path': 'pre_aug_weights.h5',
