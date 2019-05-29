@@ -14,7 +14,7 @@ DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
 TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'test'
 IMAGE_SIZE = (156, 224)
-TRAIN_SET_SIZE = 3000
+DATASET_SIZE = 4000
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -25,7 +25,7 @@ K.set_session(session)
 
 my_config = {
     'model': 'wrn_28_2',
-    'train_set_size': 2000,
+    'train_set_size': 3000,
     'child_epochs': 30,
     'child_batch_size': 64,
     'opt_samples': 2,
@@ -36,20 +36,15 @@ my_config = {
 
 def get_input_data_generator():
     # preprocessing function executes before rescale
-    train_datagen = ImageDataGenerator(rotation_range=0, width_shift_range=0.2,
-                                       height_shift_range=0.2, brightness_range=(0.8, 1.2),
-                                       shear_range=0.1, zoom_range=0.2,
-                                       channel_shift_range=0.2,
-                                       fill_mode='reflect', horizontal_flip=True,
-                                       vertical_flip=False, rescale=1/255)
-    train = train_datagen.flow_from_directory(TRAIN_DIR, target_size=IMAGE_SIZE, class_mode='sparse',
-                                              color_mode='rgb', batch_size=TRAIN_SET_SIZE, interpolation='lanczos')
+    train_datagen = ImageDataGenerator(rescale=1/255)
+    train = train_datagen.flow_from_directory(TRAIN_DIR, target_size=IMAGE_SIZE, class_mode='sparse', seed=42,
+                                              color_mode='rgb', batch_size=DATASET_SIZE, interpolation='lanczos')
     return train
 
 
 if __name__ == '__main__':
     train = get_input_data_generator()
     x_train, y_train = train.next()
-    deepaug = DeepAugment(images=x_train, labels=y_train.reshape(TRAIN_SET_SIZE, 1), config=my_config)
+    deepaug = DeepAugment(images=x_train, labels=y_train.reshape(DATASET_SIZE, 1), config=my_config)
     best_policies = deepaug.optimize(100)
     best_policies.to_csv('best_augment_policies.csv')
