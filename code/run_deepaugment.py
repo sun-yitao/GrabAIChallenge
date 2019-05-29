@@ -9,8 +9,8 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 from deepaugment.deepaugment import DeepAugment
 import sys
-sys.path.append(str(Path.cwd()))
-from lib.effnet import Effnet
+sys.path.append(str(Path.cwd() / 'lib'))
+from effnet import Effnet
 
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
