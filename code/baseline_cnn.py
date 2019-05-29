@@ -17,7 +17,7 @@ from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
 
-MODEL_NAME = 'Xception_Imagenet_no_classweight'
+MODEL_NAME = 'Xception_Imagenet_classweight'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
 N_CLASSES = 196
@@ -27,11 +27,11 @@ BATCH_SIZE = 16
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
-    'car_data_new_data_in_train' / 'train'
+    'car_data_new_data_in_train_v2' / 'train'
 TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
-    'car_data_new_data_in_train' / 'test'
-CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn_new_data' / MODEL_NAME
-LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn_new_data' / MODEL_NAME
+    'car_data_new_data_in_train_v2' / 'test'
+CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn_new_data_v2' / MODEL_NAME
+LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn_new_data_v2' / MODEL_NAME
 
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -118,8 +118,7 @@ if __name__ == '__main__':
     model = get_model()
     #model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
     callbacks = get_callbacks()
-    class_weights = compute_class_weight(
-        'balanced', np.arange(0, N_CLASSES), train.classes)
+    class_weights = compute_class_weight('balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
-                        callbacks=callbacks)
+                        callbacks=callbacks, class_weight=class_weights)
