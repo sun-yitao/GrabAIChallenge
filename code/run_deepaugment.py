@@ -12,7 +12,6 @@ from deepaugment.deepaugment import DeepAugment
 cwd = Path.cwd()
 DATA_DIR = cwd.parent / 'data'
 TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'train'
-TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'test'
 IMAGE_SIZE = (156, 224)
 DATASET_SIZE = 6000
 
@@ -24,7 +23,7 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 my_config = {
-    'model': 'wrn_28_2',
+    'model': 'wrn_22_2',
     'train_set_size': int(DATASET_SIZE * 0.7),
     'child_epochs': 30,
     'child_batch_size': 64,
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     train = get_input_data_generator()
     x_train, y_train = train.next()
     unique, counts = np.unique(y_train, return_counts=True)
-    print(dict(zip(unique, counts)))
+    print(counts)
     y_train = y_train.reshape(DATASET_SIZE, 1)
     deepaug = DeepAugment(images=x_train, labels=y_train, config=my_config)
     best_policies = deepaug.optimize(150)
