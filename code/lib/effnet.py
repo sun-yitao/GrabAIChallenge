@@ -47,7 +47,7 @@ def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=
 
     x = get_block(x_in, 32, 64, regularizer)
     x = get_block(x, 64, 128, regularizer)
-    #x = get_block(x, 128, 256, regularizer)
+    x = get_block(x, 128, 256, regularizer)
 
     if include_top:
         x = layers.Flatten()(x)
