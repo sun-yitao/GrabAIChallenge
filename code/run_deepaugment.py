@@ -8,7 +8,8 @@ import keras
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 from deepaugment.deepaugment import DeepAugment
-
+import sys
+print(sys.path)
 from lib.effnet import Effnet
 
 cwd = Path.cwd()
