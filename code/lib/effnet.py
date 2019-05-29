@@ -42,7 +42,7 @@ def get_block(x_in, ch_in, ch_out, regularizer):
     return x
 
 
-def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=l2(1e-4)):
+def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=l2(1e-3)):
     x_in = layers.Input(shape=input_shape)
 
     x = get_block(x_in, 32, 64, regularizer)
