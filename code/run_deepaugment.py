@@ -25,8 +25,12 @@ config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 K.set_session(session)
 
+model = Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196)
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics='accuracy')
 my_config = {
-    'model': Effnet(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3), nb_classes=196),
+    'model': model,
     'train_set_size': DATASET_SIZE - 1000,
     'child_epochs': 30,
     'child_batch_size': 256,
