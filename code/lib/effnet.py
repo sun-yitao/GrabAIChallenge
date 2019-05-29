@@ -42,16 +42,16 @@ def get_block(x_in, ch_in, ch_out, regularizer):
     return x
 
 
-def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=l2(1e-2)):
+def Effnet(input_shape, nb_classes, include_top=True, weights=None, regularizer=l2(1e-3)):
     x_in = layers.Input(shape=input_shape)
 
     x = get_block(x_in, 32, 64, regularizer)
     x = get_block(x, 64, 128, regularizer)
-    x = get_block(x, 128, 256, regularizer)
+    #x = get_block(x, 128, 256, regularizer)
 
     if include_top:
         x = layers.Flatten()(x)
-        x = layers.Dense(nb_classes, activation='softmax', kernel_regularizer=regularizer)(x)
+        x = layers.Dense(nb_classes, activation='softmax')(x)
 
     model = Model(inputs=x_in, outputs=x)
 
