@@ -197,7 +197,7 @@ def change_light(image, coeff):
         image_HLS[:, :, 1][image_HLS[:, :, 1] > 255] = 255
     else:
         image_HLS[:, :, 1][image_HLS[:, :, 1] < 0] = 0
-    image_HLS = np.array(image_HLS,) #dtype=np.uint8)
+    image_HLS = np.array(image_HLS, dtype=np.uint8)
     image_RGB = cv2.cvtColor(image_HLS, cv2.COLOR_HLS2RGB)  # Conversion to RGB
     return np.nan_to_num(image_RGB)
 

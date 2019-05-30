@@ -46,6 +46,7 @@ K.set_session(session)
 def augment_np_image(image):
     image = am.augment_random(image, aug_types=['add_snow', 'add_rain', 'add_fog',
         'add_gravel', 'add_sun_flare', 'add_speed', 'add_autumn'], volume='same')
+    image = image.astype(np.float32)
     eraser = get_random_eraser(p=0.8, s_l=0.02, s_h=0.3, r_1=0.3, r_2=1/0.3,
                                v_l=0, v_h=255, pixel_level=True)
     image = eraser(image)
