@@ -197,7 +197,7 @@ def change_light(image, coeff):
         image_HLS[:, :, 1][image_HLS[:, :, 1] > 255] = 255
     else:
         image_HLS[:, :, 1][image_HLS[:, :, 1] < 0] = 0
-    image_HLS = np.array(image_HLS, dtype=np.uint8)
+    image_HLS = np.array(image_HLS,) #dtype=np.uint8)
     image_RGB = cv2.cvtColor(image_HLS, cv2.COLOR_HLS2RGB)  # Conversion to RGB
     return np.nan_to_num(image_RGB)
 
@@ -441,7 +441,7 @@ def rain_process(image, slant, drop_length, drop_color, drop_width, rain_drops):
     # scale pixel values down for channel 1(Lightness)
     image_HLS[:, :, 1] = image_HLS[:, :, 1]*brightness_coefficient
     image_RGB = rgb(image_HLS, 'hls')  # Conversion to RGB
-    return image_RGB
+    return np.nan_to_num(image_RGB)
 
 # rain_type='drizzle','heavy','torrential'
 
