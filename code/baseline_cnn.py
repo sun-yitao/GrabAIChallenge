@@ -15,6 +15,7 @@ from keras import backend as K
 from lib.se_inception_resnet_v2 import SEInceptionResNetV2
 from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
+from lib import Automold as am
 
 
 MODEL_NAME = 'Xception_Imagenet_no_classweight'
@@ -40,6 +41,15 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 K.set_session(session)
+
+
+def augment_np_image(image):
+    image = am.augment_random(image, aug_types=['add_snow', 'add_rain', 'add_fog',
+        'add_gravel', 'add_sun_flare', 'add_speed', 'add_autumn'], volume='same')
+    eraser = get_random_eraser(p=0.8, s_l=0.02, s_h=0.3, r_1=0.3, r_2=1/0.3,
+                               v_l=0, v_h=255, pixel_level=True)
+    image = eraser(image)
+    return image
 
 
 def get_input_data_generators():
