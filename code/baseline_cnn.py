@@ -19,7 +19,7 @@ from lib.adabound import AdaBound
 from lib import Automold as am
 
 
-MODEL_NAME = 'Xception_Imagenet_no_classweight'
+MODEL_NAME = 'Xception_Imagenet_rain_sunflare'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
 N_CLASSES = 196
@@ -62,8 +62,7 @@ def get_input_data_generators():
                                        channel_shift_range=0.2,
                                        fill_mode='reflect', horizontal_flip=True,
                                        vertical_flip=False, rescale=1/255,
-                                       preprocessing_function=get_random_eraser(p=0.8, s_l=0.02, s_h=0.4, r_1=0.3, r_2=1/0.3,
-                                                                                v_l=0, v_h=255, pixel_level=True))
+                                       preprocessing_function=augment_np_image)
     test_datagen = ImageDataGenerator(rescale=1/255)
     train = train_datagen.flow_from_directory(TRAIN_DIR, target_size=IMAGE_SIZE,
                                               color_mode='rgb', batch_size=BATCH_SIZE, interpolation='lanczos')
@@ -133,4 +132,4 @@ if __name__ == '__main__':
     class_weights = compute_class_weight('balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
-                        callbacks=callbacks)
+                        callbacks=callbacks, class_weight=class_weights)
