@@ -983,7 +983,6 @@ def augment_random(image, aug_types="", volume='expand'):
                 output.append(eval(command))
         else:
             selected_aug = aug_types[random.randint(0, len(aug_types)-1)]
-            print(selected_aug)
             command = selected_aug+'(image)'
             output = eval(command)
 
