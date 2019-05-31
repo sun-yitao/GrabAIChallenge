@@ -16,12 +16,11 @@ from keras import backend as K
 from lib.se_inception_resnet_v2 import SEInceptionResNetV2
 from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
-from lib import Automold as am
 
 
-MODEL_NAME = 'Xception_Imagenet_rain_sunflare'
+MODEL_NAME = 'Xception_new_aspect_ratio'
 EPOCHS = 200  # only for calculation of lr decay
-IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (525,766)
+IMAGE_SIZE = (374, 534)  # height, width, avg is (483,700) (535,764)
 N_CLASSES = 196
 LR_FINAL = 0.01
 BATCH_SIZE = 16
@@ -32,7 +31,8 @@ TRAIN_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
     'car_data_new_data_in_train_v2' / 'train'
 TEST_DIR = DATA_DIR / 'stanford-car-dataset-by-classes-folder' / \
     'car_data_new_data_in_train_v2' / 'test'
-CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / 'baseline_cnn_new_data_v2' / MODEL_NAME
+CHECKPOINT_PATH = DATA_DIR / 'checkpoints' / \
+    'baseline_cnn_new_data_v2' / MODEL_NAME
 LOG_DIR = DATA_DIR / 'logs' / 'baseline_cnn_new_data_v2' / MODEL_NAME
 
 
@@ -44,16 +44,6 @@ session = tf.Session(config=config)
 K.set_session(session)
 
 
-def augment_np_image(image):
-    if random.random() > 0.7:
-        image = am.augment_random(image, aug_types=['add_rain', 'add_sun_flare'], volume='same')
-        image = image.astype(np.float32)
-    eraser = get_random_eraser(p=0.8, s_l=0.02, s_h=0.3, r_1=0.3, r_2=1/0.3,
-                               v_l=0, v_h=255, pixel_level=True)
-    image = eraser(image)
-    return image
-
-
 def get_input_data_generators():
     # preprocessing function executes before rescale
     train_datagen = ImageDataGenerator(rotation_range=0, width_shift_range=0.2,
@@ -62,7 +52,8 @@ def get_input_data_generators():
                                        channel_shift_range=0.2,
                                        fill_mode='reflect', horizontal_flip=True,
                                        vertical_flip=False, rescale=1/255,
-                                       preprocessing_function=augment_np_image)
+                                       preprocessing_function=get_random_eraser(p=0.8, s_l=0.02, s_h=0.3, r_1=0.3, r_2=1/0.3,
+                                                                                v_l=0, v_h=255, pixel_level=True))
     test_datagen = ImageDataGenerator(rescale=1/255)
     train = train_datagen.flow_from_directory(TRAIN_DIR, target_size=IMAGE_SIZE,
                                               color_mode='rgb', batch_size=BATCH_SIZE, interpolation='lanczos')
@@ -129,7 +120,8 @@ if __name__ == '__main__':
     model = get_model()
     #model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
     callbacks = get_callbacks()
-    class_weights = compute_class_weight('balanced', np.arange(0, N_CLASSES), train.classes)
+    class_weights = compute_class_weight(
+        'balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
                         callbacks=callbacks, class_weight=class_weights)
