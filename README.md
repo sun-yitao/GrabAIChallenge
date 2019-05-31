@@ -42,6 +42,6 @@ deepaugment
 | ------------------------------------------------------------- | ----------------- | ------------------- | -------------------- | ----------------- | ------------------- |
 | CNN Baseline with Xception, random cutout, adabound optimiser | 0.9811            | 0.9366              | 1.0000               | 0.9091            | 0.9524              |
 | Weakly Supervised Data Augmentation Network                   | 99.76             | 91.28               |                      |                   |                     |
-|                                                               |                   |                     |                      |                   |                     |
-|                                                               |                   |                     |                      |                   |                     |
+| CNN Baseline New Data Classweights                            | 0.9538            | 0.92265             |                      |                   |                     |
+| CNN Baseline New Data V2 Classweights                         | 0.9725            | 0.93507             |                      |                   |                     |
 |                                                               |                   |                     |                      |                   |                     |
