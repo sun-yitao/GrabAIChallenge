@@ -369,8 +369,8 @@ def snow_process(image, snow_coeff):
     brightness_coefficient = 2.5
     imshape = image.shape
     snow_point = snow_coeff  # increase this for more snow
-    image_HLS[:, :, 1][image_HLS[:, :, 1] < snow_point] = image_HLS[:, :, 1][image_HLS[:, :, 1]
-                                                                             < snow_point]*brightness_coefficient  # scale pixel values up for channel 1(Lightness)
+    lightness = image_HLS[:, :, 1]
+    lightness[lightness < snow_point] *=  brightness_coefficient  # scale pixel values up for channel 1(Lightness)
     # Sets all values above 255 to 255
     image_HLS[:, :, 1][image_HLS[:, :, 1] > 255] = 255
     image_HLS = np.array(image_HLS, dtype=np.uint8)
