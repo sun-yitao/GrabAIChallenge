@@ -16,7 +16,6 @@ from keras import backend as K
 from lib.se_inception_resnet_v2 import SEInceptionResNetV2
 from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
-from lib import Automold as am
 
 
 MODEL_NAME = 'Xception_more_cutout'
@@ -106,7 +105,7 @@ def load_model(model_path):
 
 def get_callbacks():
     os.makedirs(CHECKPOINT_PATH, exist_ok=True)
-    ckpt = keras.callbacks.ModelCheckpoint(os.path.join(CHECKPOINT_PATH, 'model.{epoch:02d}-{val_acc:.2f}.h5'),
+    ckpt = keras.callbacks.ModelCheckpoint(os.path.join(CHECKPOINT_PATH, 'model.{epoch:02d}-{val_acc:.4f}.h5'),
                                            monitor='val_acc', verbose=1, save_best_only=True)
     reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5,
                                                   verbose=1, mode='auto',  # min_delta=0.001,
