@@ -12,6 +12,7 @@ from keras.layers import Dense, Input
 from keras.applications.xception import Xception
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
+from keras_efficientnets import EfficientNetB3
 
 from lib.se_inception_resnet_v2 import SEInceptionResNetV2
 from lib.random_eraser import get_random_eraser
@@ -64,13 +65,13 @@ def get_input_data_generators():
 
 def get_model():
     input_tensor = Input(shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3))
-    base_model = SEInceptionResNetV2(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
-                                     include_top=False,
-                                     weights=None,
-                                     input_tensor=input_tensor,
-                                     pooling='avg',
-                                     classes=N_CLASSES)
-    x = base_model.output
+    base_model = EfficientNetB3(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
+                                include_top=False,
+                                weights=None,
+                                input_tensor=input_tensor,
+                                pooling='avg',
+                                classes=N_CLASSES)
+x = base_model.output
     predictions = Dense(N_CLASSES, activation='softmax')(x)
     model = keras.models.Model(inputs=base_model.input, outputs=predictions)
     decay = LR_FINAL / EPOCHS
