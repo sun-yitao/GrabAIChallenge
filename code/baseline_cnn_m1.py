@@ -71,7 +71,7 @@ def get_model():
                                 input_tensor=input_tensor,
                                 pooling='avg',
                                 classes=N_CLASSES)
-x = base_model.output
+    x = base_model.output
     predictions = Dense(N_CLASSES, activation='softmax')(x)
     model = keras.models.Model(inputs=base_model.input, outputs=predictions)
     decay = LR_FINAL / EPOCHS
