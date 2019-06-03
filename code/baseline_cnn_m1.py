@@ -22,7 +22,7 @@ MODEL_NAME = 'SEInceptionResnetV2'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (535,764)
 N_CLASSES = 196
-LR_FINAL = 0.01
+LR_FINAL = 0.1
 BATCH_SIZE = 16
 
 cwd = Path.cwd()
@@ -74,7 +74,7 @@ def get_model():
     predictions = Dense(N_CLASSES, activation='softmax')(x)
     model = keras.models.Model(inputs=base_model.input, outputs=predictions)
     decay = LR_FINAL / EPOCHS
-    optm = AdaBound(lr=0.001,
+    optm = AdaBound(lr=0.01,
                     final_lr=LR_FINAL,
                     gamma=1e-03,
                     weight_decay=decay,
