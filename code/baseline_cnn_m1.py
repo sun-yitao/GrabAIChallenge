@@ -19,7 +19,7 @@ from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
 
-MODEL_NAME = 'SEInceptionResnetV2'
+MODEL_NAME = 'EfficientNetB3'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (535,764)
 N_CLASSES = 196
