@@ -32,7 +32,9 @@ deepaugment
 
 GAN day to night:
 
-dataset: http://www.carlib.net/?page_id=35, nuscenes
+dataset: http://www.carlib.net/?page_id=35, nuscenes, https://wiki.qut.edu.au/pages/viewpage.action?pageId=181178395
+
+
 
 ## Model
 
@@ -44,22 +46,22 @@ Weakly Supervised Data Augmentation Network
 
 #### CNN Baseline
 
-| Model Name                                                | Training Accuracy | Validation Accuracy |
-| --------------------------------------------------------- | ----------------- | ------------------- |
-| CNN Baseline: Xception, random cutout, adabound optimiser | 0.9811            | 0.9366              |
-| CNN Baseline New Data Classweights                        | 0.9538            | 0.92265             |
-| CNN Baseline New Data V2 Classweights                     | 0.9725            | 0.93507             |
-| CNN Baseline New Data V2 Classweights New Aspect Ratio    | 0.9836            | 0.93305             |
-|                                                           |                   |                     |
+| Model Name                                                           | Training Accuracy | Validation Accuracy |
+| -------------------------------------------------------------------- | ----------------- | ------------------- |
+| CNN Baseline: Xception, random cutout, adabound optimiser            | 0.9811            | 0.9366              |
+| CNN Baseline New Data Classweights                                   | 0.9538            | 0.92265             |
+| CNN Baseline New Data V2 Classweights                                | 0.9725            | 0.93507             |
+| CNN Baseline New Data V2 Classweights Change Image Size for New Data | 0.9836            | 0.93305             |
+|                                                                      |                   |                     |
 
 
 
 #### Weakly Supervised Data Augmentation Network
 
-| Model Name                                                          | Training Accuracy | Validation Accuracy |
-| ------------------------------------------------------------------- | ----------------- | ------------------- |
-| Original Implementation                                             | 99.76             | 91.28               |
-| Change crop size to original image size                             | 99.76             | 93.29               |
-| Change LR schedule and remove double input preprocessing (epoch 31) | 99.75             | 94.78               |
-|                                                                     |                   |                     |
-|                                                                     |                   |                     |
+| Model Name                                                                               | Training Accuracy | Validation Accuracy |
+| ---------------------------------------------------------------------------------------- | ----------------- | ------------------- |
+| Original Implementation                                                                  | 99.76             | 91.28               |
+| Change (256, 256) crop size to original image size                                       | 99.76             | 93.29               |
+| Change LR schedule to reduce on plateau and remove double input preprocessing (epoch 58) | 99.84             | 95.31               |
+| New Data (e56)                                                                           | 99.95             | 95.97               |
+| EfficientNetB3                                                                           | 99.95             | 95.99               |
