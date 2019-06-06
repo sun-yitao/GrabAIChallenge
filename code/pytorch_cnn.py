@@ -8,6 +8,7 @@ from optparse import OptionParser
 
 import numpy as np
 from PIL import Image
+from sklearn.utils.class_weight import compute_class_weight
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -115,7 +116,8 @@ def main():
 
     optimizer = torch.optim.SGD(net.parameters(), lr=options.lr, 
                                 momentum=0.9, weight_decay=0.00001)
-    loss = nn.CrossEntropyLoss() #TODO add class weight
+    class_weights = torch.tensor(compute_class_weight('balanced', np.arange(0, num_classes), train_dataset.targets))
+    loss = nn.CrossEntropyLoss(weight=class_weights)
 
     ##################################
     # Learning rate scheduling
