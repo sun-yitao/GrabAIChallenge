@@ -28,13 +28,9 @@ Gaussian noise cutout
 
 deepaugment
 
-
-
 GAN day to night:
 
 dataset: http://www.carlib.net/?page_id=35, nuscenes, https://wiki.qut.edu.au/pages/viewpage.action?pageId=181178395
-
-
 
 ## Model
 
@@ -48,13 +44,10 @@ Weakly Supervised Data Augmentation Network
 
 | Model Name                                                           | Training Accuracy | Validation Accuracy |
 | -------------------------------------------------------------------- | ----------------- | ------------------- |
-| CNN Baseline: Xception, random cutout, adabound optimiser            | 0.9811            | 0.9366              |
-| CNN Baseline New Data Classweights                                   | 0.9538            | 0.92265             |
-| CNN Baseline New Data V2 Classweights                                | 0.9725            | 0.93507             |
-| CNN Baseline New Data V2 Classweights Change Image Size for New Data | 0.9836            | 0.93305             |
-|                                                                      |                   |                     |
-
-
+| CNN Baseline: Xception, random cutout, adabound optimiser            | 98.11             | 93.66               |
+| CNN Baseline New Data Classweights                                   | 95.38             | 92.27               |
+| CNN Baseline New Data V2 Classweights                                | 97.25             | 93.51               |
+| CNN Baseline New Data V2 Classweights Change Image Size for New Data | 98.36             | 93.30               |
 
 #### Weakly Supervised Data Augmentation Network
 
@@ -65,3 +58,4 @@ Weakly Supervised Data Augmentation Network
 | Change LR schedule to reduce on plateau and remove double input preprocessing (epoch 58) | 99.84             | 95.31               |
 | New Data (e56)                                                                           | 99.95             | 95.97               |
 | EfficientNetB3                                                                           | 99.95             | 95.99               |
+| EfficientNetB3, 64 attention maps (e34)                                                  | 99.95             | 96.18               |
