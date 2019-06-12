@@ -39,14 +39,14 @@ def parse_args():
                       help='load checkpoint model (default: False)')
     parser.add_option('-v', '--verbose', dest='verbose', default=0, type='int',
                       help='show information for each <verbose> iterations (default: 0)')
-    parser.add_option('-dd', '--data-dir', dest='data_dir', default='',
+    parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
                       help="directory to image folders named 'train' and 'test'")
 
-    parser.add_option('-lr', '--learning-rate', dest='lr', default=0.001, type='float',
+    parser.add_option('--lr', '--learning-rate', dest='lr', default=0.001, type='float',
                       help='learning rate (default: 1e-3)')
-    parser.add_option('-sf', '--save-freq', dest='save_freq', default=1, type='int',
+    parser.add_option('--sf', '--save-freq', dest='save_freq', default=1, type='int',
                       help='saving frequency of .ckpt models (default: 1)')
-    parser.add_option('-sd', '--save-dir', dest='save_dir', default=f'./checkpoints/model',
+    parser.add_option('--sd', '--save-dir', dest='save_dir', default=f'./checkpoints/model',
                       help='saving directory of .ckpt models (default: ./checkpoints/model)')
     parser.add_option('--init', '--initial-training', dest='initial_training', default=1, type='int',
                       help='train from 1-beginning or 0-resume training (default: 1)')
