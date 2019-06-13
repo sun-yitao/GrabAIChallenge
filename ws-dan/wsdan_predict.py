@@ -27,12 +27,6 @@ from dataset import UnlabelledDataset, CsvDataset
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 image_size = (512, 512)
 
-#TODO
-"""
-1. Eval/ predict mode
-2. accept csv/ imagefolder/ no labels
-
-"""
 
 def parse_args():
     parser = OptionParser()
@@ -70,11 +64,46 @@ def main():
         format='%(asctime)s: %(levelname)s: [%(filename)s:%(lineno)d]: %(message)s', level=logging.INFO)
     warnings.filterwarnings("ignore")
     options, args = parse_args()
-    extract_class_probabilities(options)
+    predict_class_probabilities(options)
 
 
-def extract_class_probabilities(options):
+def prepare_dataloader(options):
+    """Loads data from folder containing labelled folders of images/ csv containing filepaths and labels 0-195/
+    Unlabelled folder of images
     """
+    preprocess = transforms.Compose([
+        transforms.Resize(size=(image_size[0], image_size[1]), interpolation=Image.LANCZOS),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+                             std=[0.229, 0.224, 0.225])
+    ])
+    if options.do_eval:
+        if options.csv_labels_path == 'folder':
+            dataset = ImageFolder(str(options.data_dir), transform=preprocess)
+            image_list = [sample[0] for sample in dataset.samples]
+        elif options.csv_labels_path == 'csv':
+            dataset = CsvDataset(str(options.data_dir), options.csv_labels_path, 
+                                 options.csv_headings, transform=preprocess)
+            image_list = dataset.df[options.csv_headings]
+
+    else:
+        # returns image without label
+        dataset = UnlabelledDataset(str(options.data_dir), transform=preprocess, shape=image_size)
+        image_list = dataset.image_list
+    data_loader = DataLoader(dataset, batch_size=options.batch_size, shuffle=False,
+                             num_workers=options.workers, pin_memory=True)
+    logging.info(f'Extract Probabilities: Batch size: {options.batch_size}, Dataset size: {len(dataset)}')
+    return dataset, data_loader, image_list
+
+
+def predict_class_probabilities(options):
+    """Predicts class probabilities and optionally evaluates accuracy, precision, 
+    recall and f1 score if labels are provided
+
+    Args:
+        options: parsed arguments
+
+    Returns:
 
     """
     # Initialize model    
@@ -108,29 +137,7 @@ def extract_class_probabilities(options):
     net = nn.DataParallel(net)
 
     # Load dataset
-    preprocess = transforms.Compose([
-        transforms.Resize(size=(image_size[0], image_size[1]), interpolation=Image.LANCZOS),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                             std=[0.229, 0.224, 0.225])
-    ])
-    if options.do_eval:
-        if options.csv_labels_path == 'folder':
-            dataset = ImageFolder(str(options.data_dir), transform=preprocess)
-            image_list = [sample[0] for sample in dataset.samples]
-        elif options.csv_labels_path == 'csv':
-            dataset = CsvDataset(str(options.data_dir), options.csv_labels_path, 
-                                 options.csv_headings, transform=preprocess)
-            image_list = dataset.df[options.csv_headings]
-
-    else:
-        # returns image without label
-        dataset = UnlabelledDataset(str(options.data_dir), transform=preprocess, shape=image_size)
-        image_list = dataset.image_list
-    data_loader = DataLoader(dataset, batch_size=options.batch_size, shuffle=False,
-                             num_workers=options.workers, pin_memory=True)
-
-    logging.info(f'Extract Probabilities: Batch size: {options.batch_size}, Dataset size: {len(dataset)}')
+    dataset, data_loader, image_list = prepare_dataloader(options)
     # Default Parameters
     theta_c = 0.5
     crop_size = image_size  # size of cropped images for 'See Better'
