@@ -1,5 +1,4 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import time
 import logging
 import warnings
@@ -41,6 +40,11 @@ def parse_args():
                       help='number of data loading workers (default: n_cpus)')
     parser.add_option('-b', '--batch-size', dest='batch_size', default=32, type='int',
                       help='batch size (default: 32)')
+    parser.add_option('--fn', '--feature-net', dest='feature_net_name', default='efficientnetb3',
+                      help='Name of base model. Accepted values are inception/resnet152cbam/efficientnetb3')
+    parser.add_option('--gpu', '--gpu-ids', dest='gpu_ids', default='0',
+                      help='IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas')
+    
 
     parser.add_option('--de', '--do-eval', dest='do_eval', default=True,
                       help='If labels are provided, set True to evaluate metrics (default: True)')
@@ -48,16 +52,16 @@ def parse_args():
                       help=('If eval mode is set, set to "folder" to read labels from folders',
                             'with classnames. Set to csv path to read labels from csv (default: folder)'))
     parser.add_option('--csv-headings', dest='csv_headings', default='image,label',
-                      help='heading of image filepath and label column in csv')                    
+                      help='heading of image filepath and label column in csv')     
+
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
                       help='directory to images or class folders containing images')
     parser.add_option('--cp', '--ckpt-path', dest='ckpt_dir', default='./checkpoints/model.pth',
                       help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')
-    parser.add_option('--fn', '--feature-net', dest='feature_net_name', default='efficientnetb3',
-                      help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')               
     parser.add_option('--od', '--output-dir', dest='output_dir', default='./output',
                       help='saving directory of extracted class probabilities csv file')
     (options, args) = parser.parse_args()
+    os.environ['CUDA_VISIBLE_DEVICES'] = options.gpu_ids
     return options, args
 
 
