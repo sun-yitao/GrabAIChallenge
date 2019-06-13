@@ -10,7 +10,7 @@ from multiprocessing import cpu_count
 import numpy as np
 import pandas as pd
 from PIL import Image
-from sklearn.utils.class_weight import compute_class_weight
+from sklearn.metrics import precision_recall_fscore_support
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -23,17 +23,16 @@ from efficientnet_pytorch import EfficientNet
 from autoaugment import ImageNetPolicy
 from utils import accuracy
 from models import *
-from dataset import CustomDataset
+from dataset import UnlabelledDataset, CsvDataset
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 image_size = (512, 512)
 
 #TODO
 """
-1. extract probs given image directory
-2. save in csv image_path, pred_raw, pred_crop, (ground truth)
-3. run xgboost BayesCV training in separate script
-4. predict/ evaluate using extract probs -> xgb
+1. Eval/ predict mode
+2. accept csv/ imagefolder/ no labels
+
 """
 
 def parse_args():
@@ -42,14 +41,21 @@ def parse_args():
                       help='number of data loading workers (default: n_cpus)')
     parser.add_option('-b', '--batch-size', dest='batch_size', default=32, type='int',
                       help='batch size (default: 32)')
-    parser.add_option('-de', '--do-eval', dest='do_eval', default=True,
-                      help='Whether to evaluate single model performance if images are organised \
-                           in class folders inside data_dir. If False, data_dir contains images directly')
+
+    parser.add_option('--de', '--do-eval', dest='do_eval', default=True,
+                      help='If labels are provided, set True to evaluate metrics (default: True)')
+    parser.add_option('--csv', '--csv-labels-path', dest='csv_labels_path', default='folder',
+                      help=('If eval mode is set, set to "folder" to read labels from folders',
+                            'with classnames. Set to csv path to read labels from csv (default: folder)'))
+    parser.add_option('--csv-headings', dest='csv_headings', default='image,label',
+                      help='heading of image filepath and label column in csv')                    
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
-                      help="directory to images or class folders containing images")
-    parser.add_option('--cd', '--ckpt-dir', dest='ckpt_dir', default=f'./checkpoints',
-                      help='saving directory of .ckpt models (default: ./checkpoints)')
-    parser.add_option('--od', '--output-dir', dest='output_dir', default=f'./output',
+                      help='directory to images or class folders containing images')
+    parser.add_option('--cp', '--ckpt-path', dest='ckpt_dir', default='./checkpoints/model.pth',
+                      help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')
+    parser.add_option('--fn', '--feature-net', dest='feature_net_name', default='efficientnetb3',
+                      help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')               
+    parser.add_option('--od', '--output-dir', dest='output_dir', default='./output',
                       help='saving directory of extracted class probabilities csv file')
     (options, args) = parser.parse_args()
     return options, args
@@ -60,34 +66,22 @@ def main():
         format='%(asctime)s: %(levelname)s: [%(filename)s:%(lineno)d]: %(message)s', level=logging.INFO)
     warnings.filterwarnings("ignore")
     options, args = parse_args()
-    feature_nets = {
-        'efficientnet': os.path.join(options.save_dir, 'efficientnet.pth'),
-        'resnet152cbam': os.path.join(options.save_dir, 'resnet152cbam.pth'),
-        'inceptionv3': os.path.join(options.save_dir, 'inceptionv3.pth'),
-    }
+    extract_class_probabilities(options)
 
 
-
-    logging.info(f'Extract Probabilities: Batch size: {options.batch_size}, Dataset size: {len(dataset)}')
-    for feature_net_name, ckpt_path in feature_nets.items():
-        extract_class_probabilities(options, feature_net_name, ckpt_path)
-        if device == 'cuda':
-            torch.cuda.empty_cache()
-
-
-def extract_class_probabilities(options, feature_net_name, ckpt_path):
+def extract_class_probabilities(options):
     """
-    Given feature net name and ckpt path, predicts probabilties
+
     """
     # Initialize model    
     num_classes = 196
-    num_attentions = 32
-    
-    if feature_net_name == 'resnet':
+    num_attentions = 64
+
+    if options.feature_net_name == 'resnet152cbam':
         feature_net = resnet152_cbam(pretrained=True)
-    elif feature_net_name == 'efficientnet':
+    elif options.feature_net_name == 'efficientnetb3':
         feature_net = EfficientNet.from_pretrained('efficientnet-b3')
-    elif feature_net_name == 'inception':
+    elif options.feature_net_name == 'inception':
         feature_net = inception_v3(pretrained=True)
     else:
         raise RuntimeError('Invalid model name')
@@ -95,11 +89,11 @@ def extract_class_probabilities(options, feature_net_name, ckpt_path):
     net = WSDAN(num_classes=num_classes, M=num_attentions, net=feature_net)
 
     # Load ckpt and get state_dict
-    checkpoint = torch.load(ckpt_path)
+    checkpoint = torch.load(options.ckpt_path)
     state_dict = checkpoint['state_dict']
     # Load weights
     net.load_state_dict(state_dict)
-    logging.info('Network loaded from {}'.format(ckpt_path))
+    logging.info('Network loaded from {}'.format(options.ckpt_path))
     # load feature center
     feature_center = checkpoint['feature_center'].to(torch.device(device))
     logging.info('feature_center loaded from {}'.format(options.ckpt))
@@ -114,24 +108,29 @@ def extract_class_probabilities(options, feature_net_name, ckpt_path):
         transforms.Resize(size=(image_size[0], image_size[1]), interpolation=Image.LANCZOS),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], 
-                            std=[0.229, 0.224, 0.225])
+                             std=[0.229, 0.224, 0.225])
     ])
     if options.do_eval:
-        dataset = ImageFolder(str(options.data_dir), transform=preprocess)
-        image_list = [sample[0] for sample in dataset.samples]
+        if options.csv_labels_path == 'folder':
+            dataset = ImageFolder(str(options.data_dir), transform=preprocess)
+            image_list = [sample[0] for sample in dataset.samples]
+        elif options.csv_labels_path == 'csv':
+            dataset = CsvDataset(str(options.data_dir), options.csv_labels_path, 
+                                 options.csv_headings, transform=preprocess)
+            image_list = dataset.df[options.csv_headings]
+
     else:
         # returns image without label
-        dataset = CustomDataset(str(options.data_dir), shape=image_size)
+        dataset = UnlabelledDataset(str(options.data_dir), transform=preprocess, shape=image_size)
         image_list = dataset.image_list
     data_loader = DataLoader(dataset, batch_size=options.batch_size, shuffle=False,
-                                num_workers=options.workers, pin_memory=True)
+                             num_workers=options.workers, pin_memory=True)
 
     logging.info(f'Extract Probabilities: Batch size: {options.batch_size}, Dataset size: {len(dataset)}')
     # Default Parameters
     theta_c = 0.5
     crop_size = image_size  # size of cropped images for 'See Better'
     # metrics initialization
-    batches = 0
     epoch_loss = 0
     epoch_acc = np.array([0, 0, 0], dtype='float')  # top - 1, 3, 5
     loss = nn.CrossEntropyLoss()
@@ -140,6 +139,7 @@ def extract_class_probabilities(options, feature_net_name, ckpt_path):
     net.eval()
     y_pred_raw_numpy = np.zeros((len(dataset), 196))
     y_pred_crop_numpy = np.zeros((len(dataset), 196))
+    y_pred_average = np.zeros((len(dataset), 196))
 
     with torch.no_grad():
         for i, sample in enumerate(data_loader):
@@ -168,6 +168,7 @@ def extract_class_probabilities(options, feature_net_name, ckpt_path):
             y_pred_crop, _, _ = net(crop_images)
 
             y_pred = (y_pred_raw + y_pred_crop) / 2
+            y_pred_average[i*options.batch_size:(i+1)*options.batch_size] = y_pred.numpy()
             y_pred_raw_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_raw.numpy()
             y_pred_crop_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_crop.numpy()
 
@@ -180,12 +181,15 @@ def extract_class_probabilities(options, feature_net_name, ckpt_path):
                 epoch_acc += accuracy(y_pred, y, topk=(1, 3, 5))
 
     end_time = time.time()
-    output_csv_path = os.path.join(options.output_dir, feature_net_name + '_probs.csv')
+    output_csv_path = os.path.join(options.output_dir, options.feature_net_name + '_probs.csv')
     if options.do_eval:
-        logging.info('Valid: Loss %.5f,  Accuracy: Top-1 %.2f, Top-3 %.2f, Top-5 %.2f, Time %3.2f' %
+        logging.info('Valid: Loss %.5f,  Accuracy: Top-1 %.4f, Top-3 %.4f, Top-5 %.4f, Time %3.2f' %
                     (epoch_loss, epoch_acc[0], epoch_acc[1], epoch_acc[2], end_time - start_time))
-        to_csv(image_list, y_pred_raw_numpy, y_pred_crop_numpy, output_csv_path
-              [sample[1] for sample in dataset.samples])
+        ground_truth = [sample[1] for sample in dataset.samples]
+        precision, recall, f1, _ = precision_recall_fscore_support(ground_truth, np.argmax(y_pred_average, axis=1), average='micro')
+        logging.info(f'Precision: {precision}, Recall: {recall}, Micro F1: {f1}')
+        to_csv(image_list, y_pred_raw_numpy, y_pred_crop_numpy, output_csv_path,
+              ground_truth=ground_truth)
     else:
         to_csv(image_list, y_pred_raw_numpy, y_pred_crop_numpy, output_csv_path)
 
