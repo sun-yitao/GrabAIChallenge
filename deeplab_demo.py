@@ -3,6 +3,7 @@ import tarfile
 import tempfile
 from pathlib import Path
 from six.moves import urllib
+from optparse import OptionParser
 
 import numpy as np
 from PIL import Image
@@ -92,17 +93,17 @@ _TARBALL_NAME = 'deeplab_model.tar.gz'
 model_dir = tempfile.mkdtemp()
 tf.gfile.MakeDirs(model_dir)
 
+
 download_path = os.path.join(model_dir, _TARBALL_NAME)
-print('downloading model, this might take a while...')
-urllib.request.urlretrieve(_DOWNLOAD_URL_PREFIX + _MODEL_URLS[MODEL_NAME],
-                           download_path)
-print('download completed! loading DeepLab model...')
+
+if not os.path.exists(download_path):
+    print('downloading model, this might take a while...')
+    urllib.request.urlretrieve(_DOWNLOAD_URL_PREFIX + _MODEL_URLS[MODEL_NAME],
+                               download_path)
+    print('download completed! loading DeepLab model...')
 
 MODEL = DeepLabModel(download_path)
 print('model loaded successfully!')
-
-
-SAMPLE_IMAGE = '/Users/yitao.sun/Documents/GitHub/grab/yolact/00057.jpg'
 
 def run_prediction(image_path):
     """Inferences DeepLab model and visualizes result."""
@@ -115,6 +116,11 @@ def run_prediction(image_path):
 
 
 if __name__ == '__main__':
-    image_directory = Path('')
+    parser = OptionParser()
+    parser.add_option('-i', '--image-folder', dest='image_folder', default='images',
+                      help='path to folder of images')
+
+    (options, args) = parser.parse_args()
+    image_directory = Path(options.image_folder)
     for image_path in image_directory.glob('*.jpg'):
         run_prediction(image_path)
