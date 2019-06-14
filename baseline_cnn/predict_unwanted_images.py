@@ -1,3 +1,8 @@
+"""
+Iterates through new dataset from google images and predicts if images are wanted or unwanted.
+wanted images show the exterior of the car and unwanted images include car parts and interior
+if predicted as unwanted, move image into unwanted folder
+"""
 import os
 from pathlib import Path
 from shutil import move
@@ -16,11 +21,6 @@ from keras import backend as K
 from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
-"""
-Iterates through new dataset from google images and predicts if images are wanted or unwanted
-wanted images show the exterior of the car and unwanted images are everything else
-if predicted as unwanted, move image into unwanted folder
-"""
 
 IMAGE_SIZE = (363, 525)  # height, width, avg is 483, 700
 BATCH_SIZE = 16

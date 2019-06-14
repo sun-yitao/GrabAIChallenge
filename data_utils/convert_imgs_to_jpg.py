@@ -1,3 +1,4 @@
+"""Script to convert non-jpgs in a folder to jpg"""
 import os
 from pathlib import Path
 from PIL import Image

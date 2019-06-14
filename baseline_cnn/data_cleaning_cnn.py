@@ -1,3 +1,4 @@
+"""Used to classify scraped images as either wanted (car exterior) or unwanted (car interior, parts)"""
 import os
 from pathlib import Path
 from multiprocessing import cpu_count
@@ -13,11 +14,6 @@ from keras import backend as K
 
 from lib.random_eraser import get_random_eraser
 
-
-"""
-Train CNN to predict whether image is an exterior of the car (wanted)
-0: unwanted, 1: wanted
-"""
 
 MODEL_NAME = 'data_cleaning_model'
 EPOCHS = 50  # only for calculation of lr decay

@@ -1,3 +1,4 @@
+"""Copy new images from google images to original dataset"""
 from pathlib import Path
 from shutil import copy
 

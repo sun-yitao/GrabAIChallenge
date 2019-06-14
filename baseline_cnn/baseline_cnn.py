@@ -1,3 +1,5 @@
+"""Used to get baseline score. Models include Xception, Squeeze-Excitation Inception Resnet V2 and EfficientNetB3
+"""
 import os
 from pathlib import Path
 from multiprocessing import cpu_count
@@ -19,7 +21,7 @@ from lib.random_eraser import get_random_eraser
 from lib.adabound import AdaBound
 
 
-MODEL_NAME = 'EfficientNetB3'
+MODEL_NAME = 'Xception'
 EPOCHS = 200  # only for calculation of lr decay
 IMAGE_SIZE = (363, 525)  # height, width, avg is (483,700) (535,764)
 N_CLASSES = 196
@@ -65,12 +67,12 @@ def get_input_data_generators():
 
 def get_model():
     input_tensor = Input(shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3))
-    base_model = EfficientNetB3(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
-                                include_top=False,
-                                weights=None,
-                                input_tensor=input_tensor,
-                                pooling='avg',
-                                classes=N_CLASSES)
+    base_model = Xception(input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3),
+                          include_top=False,
+                          weights=None,
+                          input_tensor=input_tensor,
+                          pooling='avg',
+                          classes=N_CLASSES)
     x = base_model.output
     predictions = Dense(N_CLASSES, activation='softmax')(x)
     model = keras.models.Model(inputs=base_model.input, outputs=predictions)
@@ -121,7 +123,8 @@ if __name__ == '__main__':
     model = get_model()
     #model = load_model(str(DATA_DIR / 'checkpoints' / 'baseline_cnn' / 'Xception_Imagenet' / 'model.60-0.94.h5'))
     callbacks = get_callbacks()
-    class_weights = compute_class_weight('balanced', np.arange(0, N_CLASSES), train.classes)
+    class_weights = compute_class_weight(
+        'balanced', np.arange(0, N_CLASSES), train.classes)
     model.fit_generator(train, steps_per_epoch=len(train), epochs=1000,
                         validation_data=test, validation_steps=len(test),
                         callbacks=callbacks, class_weight=class_weights)

@@ -1,3 +1,4 @@
+"""Original train-val split was around 50/50, I chose a more aggressive 75/25 split to maximise training data"""
 import os
 import random
 from pathlib import Path

@@ -1,3 +1,5 @@
+"""Iterates through folders named according to car name in dataset, downloads 100 images per class from
+Google Images using the folder names as search term"""
 import os
 from pathlib import Path
 from google_images_download import google_images_download
