@@ -1,5 +1,4 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import time
 import logging
 import warnings
@@ -41,6 +40,8 @@ def parse_args():
                       help='show information for each <verbose> iterations (default: 0)')
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
                       help="directory to image folders named 'train' and 'test'")
+    parser.add_option('--gpu', '--gpu-ids', dest='gpu_ids', default='0',
+                      help='IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas')
 
     parser.add_option('--lr', '--learning-rate', dest='lr', default=0.001, type='float',
                       help='learning rate (default: 1e-3)')
@@ -52,6 +53,7 @@ def parse_args():
                       help='train from 1-beginning or 0-resume training (default: 1)')
 
     (options, args) = parser.parse_args()
+    os.environ['CUDA_VISIBLE_DEVICES'] = options.gpu_ids
     return options, args
 
 
