@@ -28,29 +28,28 @@ def parse_args():
     parser = OptionParser()
     parser.add_option('-j', '--workers', dest='workers', default=16, type='int',
                       help='number of data loading workers (default: 16)')
-    parser.add_option('-m', '--model', dest='model', default='inception',
-                      help='model for feature extractor (inception/resnetcbam/efficientnetb3/efficientnetb4')
-    parser.add_option('-e', '--epochs', dest='epochs', default=100, type='int',
-                      help='number of epochs (default: 100)')
-    parser.add_option('-b', '--batch-size', dest='batch_size', default=32, type='int',
-                      help='batch size (default: 32)')
-    parser.add_option('-c', '--ckpt', dest='ckpt', default=False,
-                      help='load checkpoint model (default: False)')
-    parser.add_option('-v', '--verbose', dest='verbose', default=0, type='int',
-                      help='show information for each <verbose> iterations (default: 0)')
-    parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
-                      help="directory to image folders named 'train' and 'test'")
     parser.add_option('--gpu', '--gpu-ids', dest='gpu_ids', default='0',
                       help='IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas')
+    parser.add_option('-v', '--verbose', dest='verbose', default=0, type='int',
+                      help='show information for each <verbose> iterations (default: 0)')
 
+    parser.add_option('-b', '--batch-size', dest='batch_size', default=32, type='int',
+                      help='batch size (default: 32)')
+    parser.add_option('-e', '--epochs', dest='epochs', default=100, type='int',
+                      help='number of epochs (default: 100)')
     parser.add_option('--lr', '--learning-rate', dest='lr', default=0.001, type='float',
-                      help='learning rate (default: 1e-3)')
-    parser.add_option('--sf', '--save-freq', dest='save_freq', default=1, type='int',
-                      help='saving frequency of .ckpt models (default: 1)')
+                      help='learning rate (default: 0.001)')
+    parser.add_option('-m', '--model', dest='model', default='inception',
+                      help='model for feature extractor (inception/resnetcbam/efficientnetb3/efficientnetb4')
+    
+    parser.add_option('-c', '--ckpt', dest='ckpt', default=False,
+                      help='path to checkpoint directory if resuming training (default: False)')
+    parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
+                      help="directory to image folders named 'train' and 'test'")
     parser.add_option('--sd', '--save-dir', dest='save_dir', default=f'./checkpoints/model',
                       help='saving directory of .ckpt models (default: ./checkpoints/model)')
-    parser.add_option('--init', '--initial-training', dest='initial_training', default=1, type='int',
-                      help='train from 1-beginning or 0-resume training (default: 1)')
+    parser.add_option('--sf', '--save-freq', dest='save_freq', default=1, type='int',
+                      help='saving frequency of .ckpt models (default: 1)')
 
     (options, args) = parser.parse_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = options.gpu_ids
@@ -59,8 +58,8 @@ def parse_args():
 
 def main():
     options, args = parse_args()
-    logging.basicConfig(
-        format='%(asctime)s: %(levelname)s: [%(filename)s:%(lineno)d]: %(message)s', level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s: %(levelname)s: [%(filename)s:%(lineno)d]: %(message)s',
+                        level=logging.INFO)
     warnings.filterwarnings("ignore")
 
     # Initialize model    
@@ -71,26 +70,22 @@ def main():
         feature_net = resnet152_cbam(pretrained=True)
     elif options.model == 'efficientnetb3':
         feature_net = EfficientNet.from_pretrained('efficientnet-b3')
-        #feature_net._fc = nn.Linear(feature_net._fc.in_features, 196)
     elif options.model == 'efficientnetb4':
         feature_net = EfficientNet.from_name('efficientnet-b4')
     elif options.model == 'inception':
         feature_net = inception_v3(pretrained=True)
     else:
-        raise NotImplementedError(f'Invalid model name {options.model}, choose from resnet, inception or efficientnet')
+        raise NotImplementedError(f'Invalid model name {options.model}, acceptable values are \
+                                    inception/resnetcbam/efficientnetb3/efficientnetb4')
     net = WSDAN(num_classes=num_classes, M=num_attentions, net=feature_net)
 
     # feature_center: size of (#classes, #attention_maps, #channel_features)
-    feature_center = torch.zeros(
-        num_classes, num_attentions, net.num_features * net.expansion).to(torch.device(device))
+    feature_center = torch.zeros(num_classes, num_attentions,
+                                 net.num_features * net.expansion).to(torch.device(device))
 
     if options.ckpt:
         ckpt = options.ckpt
-
-        if options.initial_training == 0:
-            # Get Name (epoch)
-            epoch_name = (ckpt.split('/')[-1]).split('.')[0]
-            start_epoch = int(epoch_name)
+        start_epoch = int((ckpt.split('/')[-1]).split('.')[0])
 
         # Load ckpt and get state_dict
         checkpoint = torch.load(ckpt)
@@ -222,8 +217,7 @@ def train(**kwargs):
         # Step 1 Original Image
         y_pred, feature_matrix, attention_map = net(X)
         # loss
-        batch_loss = loss(y_pred, y) + \
-            l2_loss(feature_matrix, feature_center[y])
+        batch_loss = loss(y_pred, y) + l2_loss(feature_matrix, feature_center[y])
         epoch_loss[0] += batch_loss.item()
 
         # backward
@@ -232,8 +226,7 @@ def train(**kwargs):
         optimizer.step()
 
         # Update Feature Center
-        feature_center[y] += beta * \
-            (feature_matrix.detach() - feature_center[y])
+        feature_center[y] += beta * (feature_matrix.detach() - feature_center[y])
 
         # metrics: top-1, top-3, top-5 error
         with torch.no_grad():
@@ -406,7 +399,6 @@ def validate(**kwargs):
     # show information for this epoch
     logging.info('Valid: Loss %.5f,  Accuracy: Top-1 %.2f, Top-3 %.2f, Top-5 %.2f, Time %3.2f' %
                  (epoch_loss, epoch_acc[0], epoch_acc[1], epoch_acc[2], end_time - start_time))
-    logging.info('')
 
     return epoch_loss, epoch_acc[0]
 
