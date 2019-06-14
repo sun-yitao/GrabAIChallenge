@@ -71,7 +71,7 @@ def main():
         feature_net = EfficientNet.from_pretrained('efficientnet-b3')
         #feature_net._fc = nn.Linear(feature_net._fc.in_features, 196)
     elif options.model == 'efficientnetb4':
-        feature_net = EfficientNet.from_pretrained('efficientnet-b4')
+        feature_net = EfficientNet.from_name('efficientnet-b4')
     elif options.model == 'inception':
         feature_net = inception_v3(pretrained=True)
     else:
