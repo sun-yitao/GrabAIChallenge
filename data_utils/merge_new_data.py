@@ -3,7 +3,7 @@ from shutil import copy
 
 
 cwd = Path.cwd()
-data_dir = cwd.parent.parent / 'data' / 'stanford-car-dataset-by-classes-folder'
+data_dir = cwd.parent / 'data' / 'stanford-car-dataset-by-classes-folder'
 original_train_dir = data_dir / 'car_data' / 'train'
 original_test_dir = data_dir / 'car_data' / 'test'
 new_data_dir = data_dir / 'car_data' / 'new_data_cleaned'

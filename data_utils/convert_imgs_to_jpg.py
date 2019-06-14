@@ -7,7 +7,7 @@ from shutil import move
 
 
 cwd = Path.cwd()
-DATA_DIR = cwd.parent.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'new_data'
+DATA_DIR = cwd.parent / 'data' / 'stanford-car-dataset-by-classes-folder' / 'car_data' / 'new_data'
 
 
 def convert_png_to_jpg():
