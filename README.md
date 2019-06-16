@@ -135,29 +135,37 @@ Options:
 
   -j , --workers
                         number of data loading workers (default: n_cpus)
+
   -b , --batch-size
                         batch size (default: 32)
+
   --fn, --feature-net
                         Name of base model. Accepted values are
                         inception/ resnet152cbam/ efficientnetb3
+
   --gpu, --gpu-ids
                         IDs of gpu(s) to use in inference, multiple gpus
                         should be seperated with commas (default: 0)
+
   --de, --do-eval
                         If labels are provided, set True to evaluate metrics
                         (default: True)
+
   --csv, --csv-labels-path
                         If eval mode is set, set to "folder" to read labels
-                        from folders with classnames. Set to csv path to read labels from csv
-                        (default: folder)
-  --csv-headings=CSV_HEADINGS
-                        heading of image filepath and label column in csv
-  --dd=DATA_DIR, --data-dir=DATA_DIR
+                        from folders with classnames. Set to csv path to read labels from csv (default: folder)
+
+  --csv-headings
+                        heading of image filepath and label columns in csv
+
+  --dd, --data-dir
                         directory to images to run evaluation/ prediction
-  --cp=CKPT_PATH, --ckpt-path=CKPT_PATH
+
+  --cp, --ckpt-path
                         Path to saved model checkpoint (default:
                         ./checkpoints/model.pth)
-  --od=OUTPUT_DIR, --output-dir=OUTPUT_DIR
+
+  --od, --output-dir
                         saving directory of extracted class probabilities csv
                         file
 
