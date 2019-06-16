@@ -84,7 +84,7 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 Python 3.6
 
 ```
-scikit-learn~=0.20.3 numpy~=1.15.4 pandas~=0.24.2 tqdm~=4.31.1
+scikit-learn~=0.20.3 numpy~=1.16.4 pandas~=0.24.2 tqdm~=4.31.1
 ```
 
 
@@ -104,7 +104,7 @@ For WS DAN
 I used the pytorch_p36 environment on AWS Linux
 
 ```
-pytorch==1.1.0 torchvision==0.2.2
+pytorch==1.1.0 torchvision==0.2.2 scipy==1.2.1
 ```
 
 EfficientNet needs to be installed by running

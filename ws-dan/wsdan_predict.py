@@ -83,7 +83,7 @@ def prepare_dataloader(options):
         if options.csv_labels_path == 'folder':
             dataset = ImageFolder(str(options.data_dir), transform=preprocess)
             image_list = [sample[0] for sample in dataset.samples]
-        elif options.csv_labels_path == 'csv':
+        else:
             dataset = CsvDataset(str(options.data_dir), options.csv_labels_path, 
                                  options.csv_headings, transform=preprocess)
             image_list = dataset.df[options.csv_headings]
