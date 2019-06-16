@@ -55,7 +55,7 @@ class WSDAN(nn.Module):
         # Network Initialization
         if isinstance(net, EfficientNet):
             self.baseline = 'efficientnet'
-            self.num_features = 272 #TODO
+            self.num_features = 232
             self.expansion = 1
         elif net is not None:
             self.features = net.get_features()

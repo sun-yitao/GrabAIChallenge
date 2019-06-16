@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from sklearn.metrics import precision_recall_fscore_support
+from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -49,8 +50,8 @@ def parse_args():
                       help='heading of image filepath and label column in csv')     
 
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
-                      help='directory to images or class folders containing images')
-    parser.add_option('--cp', '--ckpt-path', dest='ckpt_dir', default='./checkpoints/model.pth',
+                      help='directory to images to run evaluation/ prediction')
+    parser.add_option('--cp', '--ckpt-path', dest='ckpt_path', default='./checkpoints/model.pth',
                       help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')
     parser.add_option('--od', '--output-dir', dest='output_dir', default='./output',
                       help='saving directory of extracted class probabilities csv file')
@@ -129,7 +130,7 @@ def predict_class_probabilities(options):
     logging.info('Network loaded from {}'.format(options.ckpt_path))
     # load feature center
     feature_center = checkpoint['feature_center'].to(torch.device(device))
-    logging.info('feature_center loaded from {}'.format(options.ckpt))
+    logging.info('feature_center loaded from {}'.format(options.ckpt_path))
 
     # Use cuda
     cudnn.benchmark = True
@@ -142,6 +143,7 @@ def predict_class_probabilities(options):
     theta_c = 0.5
     crop_size = image_size  # size of cropped images for 'See Better'
     # metrics initialization
+    batches = 0
     epoch_loss = 0
     epoch_acc = np.array([0, 0, 0], dtype='float')  # top - 1, 3, 5
     loss = nn.CrossEntropyLoss()
@@ -153,7 +155,7 @@ def predict_class_probabilities(options):
     y_pred_average = np.zeros((len(dataset), 196))
 
     with torch.no_grad():
-        for i, sample in enumerate(data_loader):
+        for i, sample in enumerate(tqdm(data_loader)):
             if options.do_eval:
                 X, y = sample
                 y = y.to(torch.device(device))
@@ -192,32 +194,29 @@ def predict_class_probabilities(options):
                 epoch_acc += accuracy(y_pred, y, topk=(1, 3, 5))
 
     end_time = time.time()
-    output_csv_path = os.path.join(options.output_dir, options.feature_net_name + '_probs.csv')
     if options.do_eval:
+        epoch_loss /= batches
+        epoch_acc /= batches
         logging.info('Valid: Loss %.5f,  Accuracy: Top-1 %.4f, Top-3 %.4f, Top-5 %.4f, Time %3.2f' %
                     (epoch_loss, epoch_acc[0], epoch_acc[1], epoch_acc[2], end_time - start_time))
         ground_truth = [sample[1] for sample in dataset.samples]
         precision, recall, f1, _ = precision_recall_fscore_support(ground_truth, np.argmax(y_pred_average, axis=1), average='micro')
         logging.info(f'Precision: {precision}, Recall: {recall}, Micro F1: {f1}')
-        to_csv(image_list, y_pred_raw_numpy, y_pred_crop_numpy, output_csv_path,
-              ground_truth=ground_truth)
+        save_predictions(image_list, y_pred_average, options, ground_truth=ground_truth)
     else:
-        to_csv(image_list, y_pred_raw_numpy, y_pred_crop_numpy, output_csv_path)
+        save_predictions(image_list, y_pred_average, options)
 
 
 
-def to_csv(image_list, pred_raw, pred_crop, csv_path, ground_truth=None):
+def save_predictions(image_list, predicted_probabilities, options, ground_truth=None):
     logging.info('Saving class probabilities to csv')
     if ground_truth:
         df = pd.DataFrame({'image_path': image_list,
-                            'pred_raw': pred_raw,
-                            'pred_crop': pred_crop,
                             'label': ground_truth})
     else:
-        df = pd.DataFrame({'image_path': image_list,
-                            'pred_raw': pred_raw,
-                            'pred_crop': pred_crop})
-    df.to_csv(csv_path)
+        df = pd.DataFrame({'image_path': image_list})
+    df.to_csv(os.path.join(options.output_dir, options.feature_net_name + '_ImageList.csv'))
+    np.save(os.path.join(options.output_dir, options.feature_net_name + '_PredictedProbabilites.npy'))
 
 
 if __name__ == '__main__':
