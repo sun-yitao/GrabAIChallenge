@@ -36,7 +36,7 @@ def parse_args():
     parser.add_option('-b', '--batch-size', dest='batch_size', default=32, type='int',
                       help='batch size (default: 32)')
     parser.add_option('--fn', '--feature-net', dest='feature_net_name', default='efficientnetb3',
-                      help='Name of base model. Accepted values are inception/resnet152cbam/efficientnetb3')
+                      help='Name of base model. Accepted values are inception/resnet152cbam/efficientnetb3 (default: efficientnetb3)')
     parser.add_option('--gpu', '--gpu-ids', dest='gpu_ids', default='0',
                       help='IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas')
     

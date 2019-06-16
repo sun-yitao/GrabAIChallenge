@@ -121,89 +121,79 @@ cd ws-dan
 python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
 ```
 
-The best performing model EfficientNetB3 with 64 attention maps can be downloaded here: https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing
+The best performing model EfficientNetB3 with 64 attention maps can be downloaded [here](https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing)
 
 Options:
 
   -j , --workers
-                            number of data loading workers (default: n_cpus)
+    number of data loading workers (default: n_cpus)
 
   -b , --batch-size
-                            batch size (default: 32)
+    batch size (default: 32)
 
   --fn, --feature-net
-                            Name of base model. Accepted values are
-                        inception/ resnet152cbam/ efficientnetb3
+    Name of base model. Accepted values are inception/ resnet152cbam/ efficientnetb3 (default: efficientnetb3)
 
   --gpu, --gpu-ids
-                            IDs of gpu(s) to use in inference, multiple gpus
-                        should be seperated with commas (default: 0)
+    IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas (default: 0)
 
   --de, --do-eval
-                            If labels are provided, set True to evaluate metrics
-                        (default: True)
+    If labels are provided, set True to evaluate metrics (default: True)
 
   --csv, --csv-labels-path
-                            If eval mode is set, set to "folder" to read labels
-                        from folders with classnames. Set to csv path to read labels from csv (default: folder)
+    If eval mode is set, set to "folder" to read labels from folders with classnames. 
+    Set to csv path to read labels from csv (default: folder)
 
   --csv-headings
-                            heading of image filepath and label columns in csv
+    heading of image filepath and label columns in csv
 
   --dd, --data-dir
-                            directory to images to run evaluation/ prediction
+    directory to images to run evaluation/ prediction
 
   --cp, --ckpt-path
-                            Path to saved model checkpoint (default:
-                        ./checkpoints/model.pth)
+    Path to saved model checkpoint (default: ./checkpoints/model.pth)
 
   --od, --output-dir
-                            saving directory of extracted class probabilities csv
-                        file
-
+    saving directory of extracted class probabilities csv file
 
 
 ### Run Training
 
-```
+```bash
 cd ws-dan
 python train_wsdan.py 
 ```
 
 Options:
   -j , --workers
-                            number of data loading workers (default: 16)
+    number of data loading workers (default: 16)
 
   --gpu, --gpu-ids
-                            IDs of gpu(s) to use in inference, multiple gpus
-                        should be seperated with commas
+    IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas
 
   -v, --verbose
-                            show information for each <verbose> iterations
-                        (default: 0)
+    show information for each <verbose> iterations (default: 0)
 
   -b, --batch-size
-                            batch size (default: 32)
+    batch size (default: 32)
 
   -e, --epochs
-                            number of epochs (default: 100)
+    number of epochs (default: 100)
 
   --lr, --learning-rate
-                            learning rate (default: 0.001)
+    learning rate (default: 0.001)
 
   -m, --model
-                            model for feature extractor
-                        (inception/resnetcbam/efficientnetb3/efficientnetb4
+    model for feature extractor (inception/resnetcbam/efficientnetb3/efficientnetb4
 
-  -c, --ckpt      path to checkpoint directory if resuming training
-                        (default: False)
+  -c, --ckpt
+    path to checkpoint directory if resuming training (default: False)
 
   --dd, --data-dir
-                            path to directory containing folders named 'train' and 'test'
+    path to directory containing folders named 'train' and 'test'
 
   --sd, --save-dir
-                            saving directory of .ckpt models (default:
-                        ./checkpoints/model)
+    saving directory of .ckpt models (default: ./checkpoints/model)
 
   --sf, --save-freq
-                            saving frequency of .ckpt models (default: 1)
+    saving frequency of .ckpt models (default: 1)
