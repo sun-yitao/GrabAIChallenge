@@ -35,7 +35,6 @@ class CsvDataset(Dataset):
         self.transform = transform
         self.df = pd.read_csv(csv_path)
         self.csv_headings = csv_headings.split(',')
-        print(self.csv_headings)
         self.relative_image_path = relative_image_path
         self.image_list = self.df[self.csv_headings[0]].values
         self.labels = self.df[self.csv_headings[1]].values
