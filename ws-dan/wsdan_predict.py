@@ -217,7 +217,8 @@ def save_predictions(image_list, predicted_probabilities, options, ground_truth=
         df = pd.DataFrame({'image_path': image_list})
     os.makedirs(options.output_dir, exist_ok=True)
     df.to_csv(os.path.join(options.output_dir, options.feature_net_name + '_ImageList.csv'))
-    np.save(os.path.join(options.output_dir, options.feature_net_name + '_PredictedProbabilites.npy'))
+    np.save(os.path.join(options.output_dir, options.feature_net_name + '_PredictedProbabilites.npy'),
+            predicted_probabilities)
 
 
 if __name__ == '__main__':
