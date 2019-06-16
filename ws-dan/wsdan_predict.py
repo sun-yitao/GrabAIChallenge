@@ -44,12 +44,12 @@ def parse_args():
     parser.add_option('--de', '--do-eval', dest='do_eval', default=True,
                       help='If labels are provided, set True to evaluate metrics (default: True)')
     parser.add_option('--csv', '--csv-labels-path', dest='csv_labels_path', default='folder',
-                      help=('If eval mode is set, set to "folder" to read labels from folders',
-                            'with classnames. Set to csv path to read labels from csv (default: folder)'))
+                      help='If eval mode is set, set to "folder" to read labels from folders \
+                            with classnames. Set to csv path to read labels from csv (default: folder)')
     parser.add_option('--csv-headings', dest='csv_headings', default='image,label',
                       help='heading of image filepath and label column in csv')     
 
-    parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
+    parser.add_option('--dd', '--data-dir', dest='data_dir', default='data',
                       help='directory to images to run evaluation/ prediction')
     parser.add_option('--cp', '--ckpt-path', dest='ckpt_path', default='./checkpoints/model.pth',
                       help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')
@@ -184,7 +184,7 @@ def predict_class_probabilities(options):
             y_pred_average[i*options.batch_size:(i+1)*options.batch_size] = y_pred.numpy()
             y_pred_raw_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_raw.numpy()
             y_pred_crop_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_crop.numpy()
-
+            batches += 1
             if options.do_eval:
                 # loss
                 batch_loss = loss(y_pred, y)

@@ -79,10 +79,95 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 
 ## Usage
 
+### Requirements
+
+Python 3.6
+
+scikit-learn~=0.20.3
+
+numpy~=1.15.4
+
+pandas~=0.24.2
+
+tqdm~=4.31.1
+
+
+
+For CNN Baseline:
+
+I used the tensorflow_p36 environment on AWS Linux
+
+keras==2.2.4
+
+keras-applications==1.0.7
+
+keras-metrics==1.1.0
+
+keras-preprocessing==1.0.9
+
+tensorflow==1.13.1
+
+
+
+For WS DAN
+
+I used the pytorch_p36 environment on AWS Linux
+
+pytorch==1.1.0
+
+torchvision==0.2.2
+
+EfficientNet needs to be installed by running
+
+```bash
+cd EfficientNet-PyTorch
+python setup.py develop --no-deps
+```
+
 ### Run Predictions
+
+```
+cd ws-dan
+python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
+```
+
+Options:
+
+  -j , --workers
+                        number of data loading workers (default: n_cpus)
+  -b , --batch-size
+                        batch size (default: 32)
+  --fn, --feature-net
+                        Name of base model. Accepted values are
+                        inception/ resnet152cbam/ efficientnetb3
+  --gpu, --gpu-ids
+                        IDs of gpu(s) to use in inference, multiple gpus
+                        should be seperated with commas (default: 0)
+  --de, --do-eval
+                        If labels are provided, set True to evaluate metrics
+                        (default: True)
+  --csv, --csv-labels-path
+                        If eval mode is set, set to "folder" to read labels
+                        from folders with classnames. Set to csv path to read labels from csv
+                        (default: folder)
+  --csv-headings=CSV_HEADINGS
+                        heading of image filepath and label column in csv
+  --dd=DATA_DIR, --data-dir=DATA_DIR
+                        directory to images to run evaluation/ prediction
+  --cp=CKPT_PATH, --ckpt-path=CKPT_PATH
+                        Path to saved model checkpoint (default:
+                        ./checkpoints/model.pth)
+  --od=OUTPUT_DIR, --output-dir=OUTPUT_DIR
+                        saving directory of extracted class probabilities csv
+                        file
 
 
 
 ### Run Training
+
+```
+cd ws-dan
+python train_wsdan.py 
+```
 
 
