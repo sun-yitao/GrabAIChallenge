@@ -134,35 +134,35 @@ python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_check
 Options:
 
   -j , --workers
-                        number of data loading workers (default: n_cpus)
+                            number of data loading workers (default: n_cpus)
 
   -b , --batch-size
-                        batch size (default: 32)
+                            batch size (default: 32)
 
   --fn, --feature-net
-                        Name of base model. Accepted values are
+                            Name of base model. Accepted values are
                         inception/ resnet152cbam/ efficientnetb3
 
   --gpu, --gpu-ids
-                        IDs of gpu(s) to use in inference, multiple gpus
+                            IDs of gpu(s) to use in inference, multiple gpus
                         should be seperated with commas (default: 0)
 
   --de, --do-eval
-                        If labels are provided, set True to evaluate metrics
+                            If labels are provided, set True to evaluate metrics
                         (default: True)
 
   --csv, --csv-labels-path
-                        If eval mode is set, set to "folder" to read labels
+                            If eval mode is set, set to "folder" to read labels
                         from folders with classnames. Set to csv path to read labels from csv (default: folder)
 
   --csv-headings
-                        heading of image filepath and label columns in csv
+                            heading of image filepath and label columns in csv
 
   --dd, --data-dir
-                        directory to images to run evaluation/ prediction
+                            directory to images to run evaluation/ prediction
 
   --cp, --ckpt-path
-                        Path to saved model checkpoint (default:
+                            Path to saved model checkpoint (default:
                         ./checkpoints/model.pth)
 
   --od, --output-dir
