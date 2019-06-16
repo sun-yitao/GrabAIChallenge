@@ -181,9 +181,9 @@ def predict_class_probabilities(options):
             y_pred_crop, _, _ = net(crop_images)
 
             y_pred = (y_pred_raw + y_pred_crop) / 2
-            y_pred_average[i*options.batch_size:(i+1)*options.batch_size] = y_pred.numpy()
-            y_pred_raw_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_raw.numpy()
-            y_pred_crop_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_crop.numpy()
+            y_pred_average[i*options.batch_size:(i+1)*options.batch_size] = y_pred.cpu().numpy()
+            y_pred_raw_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_raw.cpu().numpy()
+            y_pred_crop_numpy[i*options.batch_size:(i+1)*options.batch_size] = y_pred_crop.cpu().numpy()
             batches += 1
             if options.do_eval:
                 # loss
@@ -215,6 +215,7 @@ def save_predictions(image_list, predicted_probabilities, options, ground_truth=
                             'label': ground_truth})
     else:
         df = pd.DataFrame({'image_path': image_list})
+    os.makedirs(options.output_dir, exist_ok=True)
     df.to_csv(os.path.join(options.output_dir, options.feature_net_name + '_ImageList.csv'))
     np.save(os.path.join(options.output_dir, options.feature_net_name + '_PredictedProbabilites.npy'))
 
