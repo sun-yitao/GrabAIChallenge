@@ -202,6 +202,7 @@ def predict_class_probabilities(options):
         ground_truth = [sample[1] for sample in dataset.samples]
         precision, recall, f1, _ = precision_recall_fscore_support(ground_truth, np.argmax(y_pred_average, axis=1), average='micro')
         logging.info(f'Precision: {precision}, Recall: {recall}, Micro F1: {f1}')
+        y_pred_average = F.softmax(y_pred_average, dim=1)
         save_predictions(image_list, y_pred_average, options, ground_truth=ground_truth)
     else:
         save_predictions(image_list, y_pred_average, options)
