@@ -83,13 +83,7 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 
 Python 3.6
 
-scikit-learn~=0.20.3
-
-numpy~=1.15.4
-
-pandas~=0.24.2
-
-tqdm~=4.31.1
+scikit-learn~=0.20.3 numpy~=1.15.4 pandas~=0.24.2 tqdm~=4.31.1
 
 
 
@@ -97,15 +91,7 @@ For CNN Baseline:
 
 I used the tensorflow_p36 environment on AWS Linux
 
-keras==2.2.4
-
-keras-applications==1.0.7
-
-keras-metrics==1.1.0
-
-keras-preprocessing==1.0.9
-
-tensorflow==1.13.1
+keras==2.2.4 keras-applications==1.0.7 keras-metrics==1.1.0 keras-preprocessing==1.0.9 tensorflow==1.13.1
 
 
 
@@ -113,9 +99,7 @@ For WS DAN
 
 I used the pytorch_p36 environment on AWS Linux
 
-pytorch==1.1.0
-
-torchvision==0.2.2
+pytorch==1.1.0 torchvision==0.2.2
 
 EfficientNet needs to be installed by running
 
@@ -130,6 +114,8 @@ python setup.py develop --no-deps
 cd ws-dan
 python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
 ```
+
+The best performing model EfficientNetB3 with 64 attention maps can be downloaded here: https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing
 
 Options:
 
@@ -178,4 +164,30 @@ cd ws-dan
 python train_wsdan.py 
 ```
 
-
+Options:
+  -j , --workers
+                        number of data loading workers (default: 16)
+  --gpu, --gpu-ids
+                        IDs of gpu(s) to use in inference, multiple gpus
+                        should be seperated with commas
+  -v, --verbose
+                        show information for each <verbose> iterations
+                        (default: 0)
+  -b, --batch-size
+                        batch size (default: 32)
+  -e, --epochs
+                        number of epochs (default: 100)
+  --lr, --learning-rate
+                        learning rate (default: 0.001)
+  -m, --model
+                        model for feature extractor
+                        (inception/resnetcbam/efficientnetb3/efficientnetb4
+  -c, --ckpt  path to checkpoint directory if resuming training
+                        (default: False)
+  --dd, --data-dir
+                        path to directory containing folders named 'train' and 'test'
+  --sd, --save-dir
+                        saving directory of .ckpt models (default:
+                        ./checkpoints/model)
+  --sf, --save-freq
+                        saving frequency of .ckpt models (default: 1)
