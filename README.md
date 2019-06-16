@@ -75,6 +75,8 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 
 ![Fast Photo Style 2](images/02425.jpg)
 
+## Super Resolution
+[Model](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)
 
 
 ## Usage
