@@ -121,7 +121,7 @@ cd ws-dan
 python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
 ```
 
-The best performing model EfficientNetB3 with 64 attention maps can be downloaded [here](https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing)
+The best performing model EfficientNetB3 with 64 attention maps [can be downloaded here](https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing)
 
 Options:
 
@@ -184,7 +184,7 @@ Options:
     learning rate (default: 0.001)
 
   -m, --model
-    model for feature extractor (inception/resnetcbam/efficientnetb3/efficientnetb4
+    model for feature extractor inception/resnetcbam/efficientnetb3 (default: efficientnetb3)
 
   -c, --ckpt
     path to checkpoint directory if resuming training (default: False)

@@ -39,8 +39,8 @@ def parse_args():
                       help='number of epochs (default: 100)')
     parser.add_option('--lr', '--learning-rate', dest='lr', default=0.001, type='float',
                       help='learning rate (default: 0.001)')
-    parser.add_option('-m', '--model', dest='model', default='inception',
-                      help='model for feature extractor (inception/resnetcbam/efficientnetb3/efficientnetb4')
+    parser.add_option('-m', '--model', dest='model', default='efficientnetb3',
+                      help='model for feature extractor (inception/resnetcbam/efficientnetb3')
     
     parser.add_option('-c', '--ckpt', dest='ckpt', default=False,
                       help='path to checkpoint directory if resuming training (default: False)')
