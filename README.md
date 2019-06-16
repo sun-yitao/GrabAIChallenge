@@ -166,7 +166,7 @@ Options:
                         ./checkpoints/model.pth)
 
   --od, --output-dir
-                        saving directory of extracted class probabilities csv
+                            saving directory of extracted class probabilities csv
                         file
 
 

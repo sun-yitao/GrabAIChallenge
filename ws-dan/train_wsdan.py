@@ -45,7 +45,7 @@ def parse_args():
     parser.add_option('-c', '--ckpt', dest='ckpt', default=False,
                       help='path to checkpoint directory if resuming training (default: False)')
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
-                      help="directory to image folders named 'train' and 'test'")
+                      help="path to directory containing folders named 'train' and 'test'")
     parser.add_option('--sd', '--save-dir', dest='save_dir', default=f'./checkpoints/model',
                       help='saving directory of .ckpt models (default: ./checkpoints/model)')
     parser.add_option('--sf', '--save-freq', dest='save_freq', default=1, type='int',
