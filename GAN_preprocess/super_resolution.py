@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
+from glob import glob
 from optparse import OptionParser
 
+from tqdm import tqdm
 from PIL import Image
 import numpy as np
 import keras
@@ -27,9 +29,9 @@ def parse_args():
 if __name__ == '__main__':
     max_img_area_to_run_superres = 128*256
     options, args = parse_args()
-    images = Path(options.data_dir).glob('*.jpg')
+    images = glob(str(Path(options.data_dir) / '**' / '*.jpg'), recursive=True)
     model = keras.models.load_model(options.model_path)
-    for image in images:
+    for image in tqdm(images):
         im = Image.open(image)
         original_im_area = im.size[0] * im.size[1]
         if original_im_area < max_img_area_to_run_superres:
