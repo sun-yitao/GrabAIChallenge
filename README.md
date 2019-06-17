@@ -1,6 +1,6 @@
 # GrabAIChallenge
 
-This repository contains to run training and predictions for a modified Weakly Supervised Data Augmentation Network which achieves 96.18% validation accuracy: [See Better Before Looking Closer: Weakly Supervised Data Augmentation Network for Fine-Grained Visual Classification](https://arxiv.org/abs/1901.09891) using EfficientNet B3 as feature extractor [EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks](https://arxiv.org/abs/1905.11946) 
+This repository contains to run training and predictions for a modified Weakly Supervised Data Augmentation Network which achieves 96.1946% validation accuracy: [See Better Before Looking Closer: Weakly Supervised Data Augmentation Network for Fine-Grained Visual Classification](https://arxiv.org/abs/1901.09891) using EfficientNet B3 as feature extractor [EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks](https://arxiv.org/abs/1905.11946) 
 
 I also explored using Segmentation and Style Transfer GAN augment images from day time to night time. To reduce the effect of low-resolution images, I provide a script to run super resolution using Deep Back-Projection Networks. For more information on code usage, please skip over to Usage section.
 
@@ -44,7 +44,7 @@ To improve on this baseline, I used the implementation of Weakly Supervised Data
 
 
 
-After reading through the paper and code in depth, I realised there were a few implementation errors. After fixing the errors, I managed to obtain 95.31% validation accuracy which is further increased to 95.97% using additional data from Google Images. Since the network uses attention cropping, the effect of advertisement words and graphics seems to be mitigated.  Switching the feature extractor to EfficientNetB3 from InceptionV3 and increasing the number of attention maps from 32 to 64 resulted in the final validation accuracy of 96.18%.
+After reading through the paper and code in depth, I realised there were a few implementation errors. After fixing the errors, I managed to obtain 95.31% validation accuracy which is further increased to 95.97% using additional data from Google Images. Since the network uses attention cropping, the effect of advertisement words and graphics seems to be mitigated.  Switching the feature extractor to EfficientNetB3 from InceptionV3 and increasing the number of attention maps from 32 to 64 resulted in the final validation accuracy of 96.1946% (Precision: 96.238, Recall: 96.056, F1: 96.018)
 
 #### WS DAN Results
 
@@ -55,7 +55,7 @@ After reading through the paper and code in depth, I realised there were a few i
 | Change LR schedule to reduce on plateau and remove double input preprocessing | 99.84             | 95.31               |
 | New Data V2                                                                   | 99.95             | 95.97               |
 | EfficientNetB3                                                                | 99.95             | 95.99               |
-| **EfficientNetB3, 64 attention maps (epoch 34)**                              | **99.95**         | **96.18**           |
+| **EfficientNetB3, 64 attention maps (epoch 34)**                              | **99.95**         | **96.19**           |
 | EfficientNetB4, 64 attention maps                                             | 99.89             | 94.23               |
 
 
@@ -85,7 +85,7 @@ To mitigate this, I decided to use a script to run super resolution on test imag
 #### Results
 | Dataset                         | Accuracy |
 | ------------------------------- | -------- |
-| Original Validation Set         | 96.18    |
+| Original Validation Set         | 96.19    |
 | Downsampled Validation Set      | 93.60    |
 | Super Resolution Validation Set | 94.56    |
 
