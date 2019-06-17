@@ -130,14 +130,14 @@ python setup.py develop --no-deps
 
 ```bash
 cd GAN_preprocess
-python super_resolution.py --gpu gpu_ids --data_dir path_to_data_directory --model_path path_to_sr_model
+python super_resolution.py --data_dir /path/to/data/directory --model_path /path/to/sr/model
 ```
 
 ### Run Predictions
 
 ```bash
 cd ws-dan
-python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
+python wsdan_predict.py --data-dir /path/to/images --ckpt-dir /path/to/model/checkpoint --output-dir /path/to/save/predictions
 ```
 
 The best performing model EfficientNetB3 with 64 attention maps [can be downloaded here](https://drive.google.com/file/d/1fT20Xom6x_TDSCHsyh8pDYfHp4-6LjaO/view?usp=sharing)
@@ -189,7 +189,7 @@ Options:
 
 ```bash
 cd ws-dan
-python train_wsdan.py 
+python train_wsdan.py --data-dir /path/to/dataset/directory --save-dir /path/to/save/checkpoints
 ```
 
 Options:
