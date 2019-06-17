@@ -90,7 +90,10 @@ To mitigate this, I decided to use a script to run super resolution on test imag
 | Downsampled Validation Set      | 93.60    |
 | Super Resolution Validation Set | 94.56    |
 
-
+Downsampled Image Example:
+![Downsampled Image](images/01410_downsampled.jpg)
+Super Resolution Image Example:
+![Super Resolution Image](images/01410_SR.jpg)
 
 ## Usage
 
