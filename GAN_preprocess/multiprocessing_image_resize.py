@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from glob import glob
 import cv2
 
 data_dir = Path.cwd().parent / 'data' / 'downsampled'
@@ -11,8 +12,8 @@ def resize_image(input_path):
     print(small_im.shape)
     cv2.imwrite(input_path, small_im)
 
-for img in data_dir.glob('*.jpg'):
-    resize_image(str(img))
+for img in glob(str(data_dir / '**' / '*.jpg'), recursive=True):
+    resize_image(img)
 
 
 
