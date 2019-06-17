@@ -93,6 +93,7 @@ To mitigate this, I decided to use a script to run super resolution on test imag
 Downsampled Image Example:
 
 ![Downsampled Image](images/01410_downsampled.jpg)
+
 Super Resolution Image Example:
 
 ![Super Resolution Image](images/01410_SR.jpg)
