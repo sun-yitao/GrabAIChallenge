@@ -24,7 +24,7 @@ Some of these new images are irrelevant (car interiors or car parts). I cleaned 
 
 The new data is also cleaned manually as there are some images misclassified by Google Images eg: convertible vs coupe, Dodge Challenger vs Dodge Charger SRT. I will refer to this dataset as 'New Data V2'.
 
-Imagenet Data Augmentation Policy
+I used the Imagenet Data Augmentation Policy from AutoAugment [Github](https://github.com/DeepVoltaire/AutoAugment) [Paper](https://arxiv.org/abs/1805.09501v1)
 
 ## Model
 
@@ -78,8 +78,17 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 ![Fast Photo Style 2](images/02425.jpg)
 
 ## Super Resolution
-https://github.com/alterzero/DBPN-Pytorch
-[Model](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)
+The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels.
+
+To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch). The converted keras model [can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)
+
+
+#### Results
+| Dataset                 | Accuracy |
+| ----------------------- | -------- |
+| Original Validation Set | 96.18    |
+
+
 
 
 ## Usage
