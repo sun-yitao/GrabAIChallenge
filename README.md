@@ -5,14 +5,13 @@ This repository contains to run training and predictions for a modified Weakly S
 I also explored using Segmentation and Style Transfer GAN augment images from day time to night time. To reduce the effect of low-resolution images, I provide a script to run super resolution using Deep Back-Projection Networks. For more information on code usage, please skip over to Usage section.
 
 
-
 ## Data Preparation
 
 I used the stanford cars dataset sorted by classes folder at [https://www.kaggle.com/jutrera/stanford-car-dataset-by-classes-folder](https://www.kaggle.com/jutrera/stanford-car-dataset-by-classes-folder)
 
 First I combined the provided train and test dataset and did a 75/25 train test split using rebuild_dataset.py to maximise the training data available
 
-Train size: 12208    Test size: 3997
+Train size: 12208     Test size: 3997
 
 Duplicates have been removed using Gemini.
 
@@ -41,7 +40,7 @@ I first used a standard image classification method to obtain a baseline. I used
 
 
 
-I used the implementation of Weakly Supervised Data Augmentation (WSDAN) from [https://github.com/GuYuc/WS-DAN.PyTorch](https://github.com/GuYuc/WS-DAN.PyTorch). However, the original implementation seems to have performance issues as some users have [commented](https://github.com/GuYuc/WS-DAN.PyTorch/issues/1). Running the original implementation on my rebuilt dataset, I only managed to obtain 91.28% accuracy.
+To improve on this baseline, I used the implementation of Weakly Supervised Data Augmentation (WSDAN) from [https://github.com/GuYuc/WS-DAN.PyTorch](https://github.com/GuYuc/WS-DAN.PyTorch). However, the original implementation seems to have performance issues as some users have [commented](https://github.com/GuYuc/WS-DAN.PyTorch/issues/1). Running the original implementation on my rebuilt dataset, I only managed to obtain 91.28% accuracy.
 
 
 
@@ -63,7 +62,7 @@ After reading through the paper and code in depth, I realised there were a few i
 
 ## Style Transfer GAN
 
-As the training dataset consists of only day time images, I explored using [Unsupervised Image-to-Image Translation](https://github.com/mingyuliutw/UNIT) (UNIT) and [Fast Photo Style Transfer](https://github.com/NVIDIA/FastPhotoStyle) to convert day time images to night time. I tried collecting night time images from Google Images, but there are only a few relevant images per car brand so I went out to film some of my own night time data. In total we had only 366 night time images however and the results should be better should more data be available. For Fast Photo Style Transfer we first used [DeepLabV3 with Xception Backbone](https://github.com/tensorflow/models/tree/master/research/deeplab) to obtain segmentation maps as the results without segmentation maps are quite bad. As the code is licensed under a non-commercial license, I won't be able to include it here.
+As the training dataset consists of only day time images, I explored using [Unsupervised Image-to-Image Translation](https://github.com/mingyuliutw/UNIT) (UNIT) and [Fast Photo Style Transfer](https://github.com/NVIDIA/FastPhotoStyle) to convert day time images to night time. I tried collecting night time images from Google Images, but there are only a few relevant images per car brand so I went out to film some of my own night time data. In total I had only 366 night time images however so the results should be better should more data be available. For Fast Photo Style Transfer we first used [DeepLabV3 with Xception Backbone](https://github.com/tensorflow/models/tree/master/research/deeplab) to obtain segmentation maps as the results without segmentation maps are quite bad. As the code is licensed under a non-commercial license, I won't be able to include it here.
 
 Here are some of the results from UNIT:
 
@@ -78,9 +77,9 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 ![Fast Photo Style 2](images/02425.jpg)
 
 ## Super Resolution
-The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels and sure enough the accuracy dropped to 93.60%.
+The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels and sure enough, the accuracy dropped to 93.60%.
 
-To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch) into a keras model ([can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn))
+To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch) into a keras model ([can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)). Running super resolution on the downsampled dataset improves the accuracy to 94.56%
 
 
 #### Results
