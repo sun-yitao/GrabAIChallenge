@@ -247,7 +247,7 @@ Weakly Supervised Data Augmentation Network: [Github](https://github.com/GuYuc/W
 
 AutoAugment: [Github](https://github.com/DeepVoltaire/AutoAugment), [Paper](https://arxiv.org/abs/1805.09501v1)
 
-Deep Back-Projection Networks: [Github](https://github.com/barisozmen/deepaugment) [Paper](https://arxiv.org/abs/1803.02735)
+Deep Back-Projection Networks: [Github](https://github.com/barisozmen/deepaugment), [Paper](https://arxiv.org/abs/1803.02735)
 
 Random Erasing: [Github](https://github.com/yu4u/cutout-random-erasing), [Paper](https://arxiv.org/abs/1708.04896)
 
@@ -255,7 +255,7 @@ Adabound: [Github](https://github.com/titu1994/keras-adabound), [Paper](https://
 
 Automold: [Github](https://github.com/UjjwalSaxena/Automold--Road-Augmentation-Library)
 
-EffNet:[Github](https://github.com/arthurdouillard/keras-effnet), [Paper](https://arxiv.org/abs/1801.06434)
+EffNet: [Github](https://github.com/arthurdouillard/keras-effnet), [Paper](https://arxiv.org/abs/1801.06434)
 
 Squeeze and Excitation Networks: [Github](https://github.com/titu1994/keras-squeeze-excite-network), [Paper](https://arxiv.org/abs/1709.01507)
 
