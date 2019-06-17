@@ -192,8 +192,8 @@ def predict_class_probabilities(options):
         logging.info('Valid: Loss %.5f,  Accuracy: Top-1 %.4f, Top-3 %.4f, Top-5 %.4f, Time %3.2f' %
                     (epoch_loss, epoch_acc[0], epoch_acc[1], epoch_acc[2], end_time - start_time))
         ground_truth = [sample[1] for sample in dataset.samples]
-        precision, recall, f1, _ = precision_recall_fscore_support(ground_truth, np.argmax(y_pred_average, axis=1), average='micro')
-        logging.info(f'Precision: {precision}, Recall: {recall}, Micro F1: {f1}')
+        precision, recall, f1, _ = precision_recall_fscore_support(ground_truth, np.argmax(y_pred_average, axis=1), average='macro')
+        logging.info(f'Precision: {precision}, Recall: {recall}, Macro F1: {f1}')
         y_pred_average = softmax(y_pred_average, axis=1)
         save_predictions(image_list, y_pred_average, options, ground_truth=ground_truth)
     else:
