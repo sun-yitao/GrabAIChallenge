@@ -223,3 +223,18 @@ Options:
 
   --sf, --save-freq
     saving frequency of .ckpt models (default: 1)
+
+## License
+MIT License
+
+## Acknowledgments
+EfficientNet [Github](https://github.com/lukemelas/EfficientNet-PyTorch), [Paper](https://arxiv.org/abs/1905.11946)
+Weakly Supervised Data Augmentation Network [Github](https://github.com/GuYuc/WS-DAN.PyTorch), [Paper](https://arxiv.org/abs/1901.09891)
+AutoAugment [Github](https://github.com/DeepVoltaire/AutoAugment), [Paper](https://arxiv.org/abs/1805.09501v1)
+Deep Back-Projection Networks [Github](https://github.com/barisozmen/deepaugment) [Paper](https://arxiv.org/abs/1803.02735)
+Random Erasing [Github](https://github.com/yu4u/cutout-random-erasing), [Paper](https://arxiv.org/abs/1708.04896)
+Adabound [Github](https://github.com/titu1994/keras-adabound), [Paper](https://openreview.net/forum?id=Bkg3g2R9FX)
+Automold [Github](https://github.com/UjjwalSaxena/Automold--Road-Augmentation-Library)
+EffNet[Github](https://github.com/arthurdouillard/keras-effnet), [Paper](https://arxiv.org/abs/1801.06434)
+Squeeze and Excitation Networks [Github](https://github.com/titu1994/keras-squeeze-excite-network), [Paper](https://arxiv.org/abs/1709.01507)
+DeepAugment [Github](https://github.com/barisozmen/deepaugment)
