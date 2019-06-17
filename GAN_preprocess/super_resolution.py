@@ -31,6 +31,7 @@ if __name__ == '__main__':
     options, args = parse_args()
     images = glob(str(Path(options.data_dir) / '**' / '*.jpg'), recursive=True)
     model = keras.models.load_model(options.model_path)
+    images_to_superres = []
     for image in tqdm(images):
         im = Image.open(image)
         original_im_area = im.size[0] * im.size[1]

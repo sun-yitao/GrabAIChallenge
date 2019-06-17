@@ -2,7 +2,7 @@
 
 This repository contains to run training and predictions for a modified Weakly Supervised Data Augmentation Network which achieves 96.18% validation accuracy: [See Better Before Looking Closer: Weakly Supervised Data Augmentation Network for Fine-Grained Visual Classification](https://arxiv.org/abs/1901.09891) using EfficientNet B3 as feature extractor [EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks](https://arxiv.org/abs/1905.11946) 
 
-I also explored using Segmentation and Style Transfer GAN augment images from day time to night time. For more information on code usage, please skip over to Usage section.
+I also explored using Segmentation and Style Transfer GAN augment images from day time to night time. To reduce the effect of low-resolution images, I provide a script to run super resolution using Deep Back-Projection Networks. For more information on code usage, please skip over to Usage section.
 
 
 
@@ -18,13 +18,13 @@ Duplicates have been removed using Gemini.
 
 I added new data from Google Images using the script g_images_download.py
 
-Some of these new images are irrelevant (car interiors or car parts). I cleaned around 25 image folders manually and fine-tuned a pretrained Xception to classify these new images as wanted or unwanted. We used this model to help us clean the rest of the data using predict_unwanted_images.py. This dataset is combined with the original 12208 training images and I will refer to it as 'New Data'. Some of the images classified as unwanted by this model are shown below:
+Some of these new images are irrelevant (car interiors or car parts). I cleaned around 25 image folders manually and fine-tuned a pretrained Xception to classify these new images as wanted or unwanted. I used this model to help us clean the rest of the data using predict_unwanted_images.py. This dataset is combined with the original 12208 training images and I will refer to it as 'New Data'. Some of the images classified as unwanted by this model are shown below:
 
 ![unwanted images](images/unwanted_google_images.jpg)
 
 The new data is also cleaned manually as there are some images misclassified by Google Images eg: convertible vs coupe, Dodge Challenger vs Dodge Charger SRT. I will refer to this dataset as 'New Data V2'.
 
-I used the Imagenet Data Augmentation Policy from AutoAugment [Github](https://github.com/DeepVoltaire/AutoAugment) [Paper](https://arxiv.org/abs/1805.09501v1)
+I also used the Imagenet Data Augmentation Policy from AutoAugment [Github](https://github.com/DeepVoltaire/AutoAugment), [Paper](https://arxiv.org/abs/1805.09501v1)
 
 ## Model
 
@@ -88,7 +88,7 @@ To mitigate this, I decided to use a script to run super resolution on test imag
 | ------------------------------- | -------- |
 | Original Validation Set         | 96.18    |
 | Downsampled Validation Set      | 93.60    |
-| Super Resolution Validation Set |          |
+| Super Resolution Validation Set | 94.56    |
 
 
 
@@ -104,7 +104,7 @@ scikit-learn~=0.20.3 numpy~=1.16.4 pandas~=0.24.2 tqdm~=4.31.1
 
 
 
-For CNN Baseline:
+For CNN Baseline and Super Resolution:
 
 I used the tensorflow_p36 environment on AWS Linux
 
