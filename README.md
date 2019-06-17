@@ -24,6 +24,8 @@ Some of these new images are irrelevant (car interiors or car parts). I cleaned 
 
 The new data is also cleaned manually as there are some images misclassified by Google Images eg: convertible vs coupe, Dodge Challenger vs Dodge Charger SRT. I will refer to this dataset as 'New Data V2'.
 
+Imagenet Data Augmentation Policy
+
 ## Model
 
 I first used a standard image classification method to obtain a baseline. I used Xception with [random erasing augmentation](https://github.com/yu4u/cutout-random-erasing), [AdaBound optimizer](https://github.com/titu1994/keras-adabound) and class weights. Adding new data seems to reduce validation accuracy as some of the images from Google Images come with advertisement words and graphics that may have confused the classifier (advertisment graphics for cheaper cars differ significantly compared to those for more expensive cars)

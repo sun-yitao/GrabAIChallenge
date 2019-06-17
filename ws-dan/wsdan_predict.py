@@ -21,7 +21,6 @@ import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from efficientnet_pytorch import EfficientNet
 
-from autoaugment import ImageNetPolicy
 from utils import accuracy
 from models import *
 from dataset import UnlabelledDataset, CsvDataset
