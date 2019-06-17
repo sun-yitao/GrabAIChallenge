@@ -38,13 +38,9 @@ I first used a standard image classification method to obtain a baseline. I used
 | CNN Baseline New Data V2 Classweights                      | 97.25             | 93.51               |
 | CNN Baseline New Data V2 Classweights Increased Image Size | 98.36             | 93.30               |
 
-
-
 To improve on this baseline, I used the implementation of Weakly Supervised Data Augmentation (WSDAN) from [https://github.com/GuYuc/WS-DAN.PyTorch](https://github.com/GuYuc/WS-DAN.PyTorch). However, the original implementation seems to have performance issues as some users have [commented](https://github.com/GuYuc/WS-DAN.PyTorch/issues/1). Running the original implementation on my rebuilt dataset, I only managed to obtain 91.28% accuracy.
 
-
-
-After reading through the paper and code in depth, I realised there were a few implementation errors. After fixing the errors, I managed to obtain 95.31% validation accuracy which is further increased to 95.97% using additional data from Google Images. Since the network uses attention cropping, the effect of advertisement words and graphics seems to be mitigated.  Switching the feature extractor to EfficientNetB3 from InceptionV3 and increasing the number of attention maps from 32 to 64 resulted in the final validation accuracy of 96.1946% (Precision: 96.238, Recall: 96.056, F1: 96.018)
+After reading through the paper and code in depth, I realised there were a few implementation errors. After fixing the errors, I managed to obtain 95.31% validation accuracy which is further increased to 95.97% using additional data from Google Images. Since the network uses attention cropping, the effect of advertisement words and graphics seems to have been mitigated.  Switching the feature extractor to EfficientNetB3 from InceptionV3 and increasing the number of attention maps from 32 to 64 resulted in the final validation accuracy of 96.1946% (Precision: 96.238, Recall: 96.056, F1: 96.018)
 
 #### WS DAN Results
 
@@ -79,7 +75,7 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 ## Super Resolution
 The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels and sure enough, the accuracy dropped to 93.60%.
 
-To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch) into a keras model ([can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)). Running super resolution on the downsampled dataset improves the accuracy to 94.56%
+To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch) into a Keras model ([can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)). Running super resolution on the downsampled dataset before prediction improves the accuracy to 94.56%
 
 
 #### Results
@@ -107,8 +103,6 @@ Python 3.6
 scikit-learn~=0.20.3 numpy~=1.16.4 pandas~=0.24.2 tqdm~=4.31.1
 ```
 
-
-
 For CNN Baseline and Super Resolution:
 
 I used the tensorflow_p36 environment on AWS Linux
@@ -116,8 +110,6 @@ I used the tensorflow_p36 environment on AWS Linux
 ```
 keras==2.2.4 keras-applications==1.0.7 keras-metrics==1.1.0 keras-preprocessing==1.0.9 tensorflow==1.13.1
 ```
-
-
 
 For WS DAN
 
@@ -133,16 +125,17 @@ EfficientNet needs to be installed by running
 cd EfficientNet-PyTorch
 python setup.py develop --no-deps
 ```
+
 ### Run Super Resolution
 
-```
+```bash
 cd GAN_preprocess
 python super_resolution.py --gpu gpu_ids --data_dir path_to_data_directory --model_path path_to_sr_model
 ```
 
 ### Run Predictions
 
-```
+```bash
 cd ws-dan
 python wsdan_predict.py --data-dir path_to_images --ckpt-dir path_to_model_checkpoint --output-dir path_to_save_predictions
 ```
