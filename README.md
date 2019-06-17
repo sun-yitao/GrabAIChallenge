@@ -78,9 +78,9 @@ Here are some of the results from FastPhotoStyle using segmentation maps:
 ![Fast Photo Style 2](images/02425.jpg)
 
 ## Super Resolution
-The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels.
+The image size I used for WSDAN is 512 by 512, if the input image is significantly smaller than this size, accuracy will be affected. To test the effect of small image size, I downsampled each image in the validation set such that the smallest side of the image is 128 pixels and sure enough the accuracy dropped to 93.60%.
 
-To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch). The converted keras model [can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn)
+To mitigate this, I decided to use a script to run super resolution on test images if the image size is below a certain threshold area (I set as 128*256). I converted the super resolution model from [DBPN Pytorch](https://github.com/alterzero/DBPN-Pytorch) into a keras model ([can be downloaded here](https://drive.google.com/open?id=1mpCAw6vojqly2bZinlU8Ddt3BGMNjjFn))
 
 
 #### Results
@@ -130,6 +130,12 @@ EfficientNet needs to be installed by running
 ```bash
 cd EfficientNet-PyTorch
 python setup.py develop --no-deps
+```
+### Run Super Resolution
+
+```
+cd GAN_preprocess
+python super_resolution.py --gpu gpu_ids --data_dir path_to_data_directory --model_path path_to_sr_model
 ```
 
 ### Run Predictions
