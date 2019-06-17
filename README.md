@@ -11,7 +11,7 @@ I used the stanford cars dataset sorted by classes folder at [https://www.kaggle
 
 First I combined the provided train and test dataset and did a 75/25 train test split using rebuild_dataset.py to maximise the training data available
 
-Train size: 12208     Test size: 3997
+Train size: 12208, Test size: 3997
 
 Duplicates have been removed using Gemini.
 
