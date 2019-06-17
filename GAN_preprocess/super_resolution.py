@@ -1,3 +1,5 @@
+"""Iterates through images in data directory recursively, if image is below a threshold area,
+super resolution will be run on the image"""
 import os
 from pathlib import Path
 from glob import glob
@@ -27,7 +29,7 @@ def parse_args():
 
 
 if __name__ == '__main__':
-    max_img_area_to_run_superres = 128*256
+    max_img_area_to_run_superres = 128*256 # images below this area will be super resoluted
     options, args = parse_args()
     images = glob(str(Path(options.data_dir) / '**' / '*.jpg'), recursive=True)
     model = keras.models.load_model(options.model_path)

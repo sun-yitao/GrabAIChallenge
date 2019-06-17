@@ -102,9 +102,6 @@ def predict_class_probabilities(options):
 
     Args:
         options: parsed arguments
-
-    Returns:
-
     """
     # Initialize model    
     num_classes = 196
@@ -205,7 +202,8 @@ def predict_class_probabilities(options):
 
 
 def save_predictions(image_list, predicted_probabilities, options, ground_truth=None):
-    logging.info('Saving class probabilities to csv')
+    """Save predicted probabilities to .npy and corresponding image paths to csv"""
+    logging.info('Saving class probabilities to csv and npy')
     if ground_truth:
         df = pd.DataFrame({'image_path': image_list,
                             'label': ground_truth})

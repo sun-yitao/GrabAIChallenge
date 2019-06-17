@@ -1,3 +1,4 @@
+"""Used to downsample images for testing low resolution validation accuracy"""
 import os
 from pathlib import Path
 from glob import glob

@@ -1,3 +1,4 @@
+"""Used to obtain segmentation maps for Fast Photo Style Transfer"""
 import os
 import tarfile
 import tempfile
