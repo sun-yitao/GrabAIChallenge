@@ -84,10 +84,11 @@ To mitigate this, I decided to use a script to run super resolution on test imag
 
 
 #### Results
-| Dataset                 | Accuracy |
-| ----------------------- | -------- |
-| Original Validation Set | 96.18    |
-
+| Dataset                         | Accuracy |
+| ------------------------------- | -------- |
+| Original Validation Set         | 96.18    |
+| Downsampled Validation Set      | 93.60    |
+| Super Resolution Validation Set |          |
 
 
 

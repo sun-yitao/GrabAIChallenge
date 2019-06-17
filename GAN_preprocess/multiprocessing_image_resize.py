@@ -3,7 +3,7 @@ from pathlib import Path
 from glob import glob
 import cv2
 
-data_dir = Path.cwd().parent / 'data' / 'downsampled'
+data_dir = Path.cwd().parent / 'data' / 'super_resolution'
 
 def resize_image(input_path):
     im = cv2.imread(input_path)
