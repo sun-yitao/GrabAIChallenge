@@ -152,35 +152,44 @@ The best performing model EfficientNetB3 with 64 attention maps [can be download
 Options:
 
   -j , --workers
-    number of data loading workers (default: n_cpus)
+
+  Number of data loading workers (default: n_cpus)
 
   -b , --batch-size
-    batch size (default: 32)
+
+  Batch size (default: 32)
 
   --fn, --feature-net
-    Name of base model. Accepted values are inception/ resnet152cbam/ efficientnetb3 (default: efficientnetb3)
+
+  Name of base model. Accepted values are inception/ resnet152cbam/ efficientnetb3 (default: efficientnetb3)
 
   --gpu, --gpu-ids
-    IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas (default: 0)
+
+  IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas (default: 0)
 
   --de, --do-eval
-    If labels are provided, set True to evaluate metrics (default: True)
+
+  If labels are provided, set True to evaluate metrics (default: True)
 
   --csv, --csv-labels-path
-    If eval mode is set, set to "folder" to read labels from folders with classnames. 
-    Set to csv path to read labels from csv (default: folder)
+
+  If eval mode is set, set to "folder" to read labels from folders with classnames. Set to csv path to read labels from csv (default: folder)
 
   --csv-headings
-    heading of image filepath and label columns in csv
+
+  Heading of image filepath and label columns in csv
 
   --dd, --data-dir
-    directory to images to run evaluation/ prediction
+
+  Directory to images to run evaluation/ prediction
 
   --cp, --ckpt-path
-    Path to saved model checkpoint (default: ./checkpoints/model.pth)
+
+  Path to saved model checkpoint (default: ./checkpoints/model.pth)
 
   --od, --output-dir
-    saving directory of extracted class probabilities csv file
+
+  Saving directory of extracted class probabilities csv file
 
 
 ### Run Training
@@ -193,7 +202,7 @@ python train_wsdan.py
 Options:
   -j , --workers
 
-  number of data loading workers (default: 16)
+  Number of data loading workers (default: 16)
 
   --gpu, --gpu-ids
 
@@ -201,15 +210,15 @@ Options:
 
   -v, --verbose
 
-  show information for each <verbose> iterations (default: 0)
+  Show information for each <verbose> iterations (default: 0)
 
   -b, --batch-size
 
-  batch size (default: 32)
+  Batch size (default: 32)
 
   -e, --epochs
 
-  number of epochs (default: 100)
+  Number of epochs (default: 100)
 
   --lr, --learning-rate
 
@@ -217,23 +226,23 @@ Options:
 
   -m, --model
 
-  model for feature extractor inception/resnetcbam/efficientnetb3 (default: efficientnetb3)
+  Model for feature extractor inception/resnetcbam/efficientnetb3 (default: efficientnetb3)
 
   -c, --ckpt
 
-  path to checkpoint directory if resuming training (default: False)
+  Path to checkpoint directory if resuming training (default: False)
 
   --dd, --data-dir
 
-  path to directory containing folders named 'train' and 'test'
+  Path to directory containing folders named 'train' and 'test'
 
   --sd, --save-dir
 
-  saving directory of .ckpt models (default: ./checkpoints/model)
+  Saving directory of .ckpt models (default: ./checkpoints/model)
 
   --sf, --save-freq
 
-  saving frequency of .ckpt models (default: 1)
+  Saving frequency of .ckpt models (default: 1)
 
 ## License
 MIT License
