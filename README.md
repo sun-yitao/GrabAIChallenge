@@ -192,37 +192,48 @@ python train_wsdan.py
 
 Options:
   -j , --workers
-    number of data loading workers (default: 16)
+
+  number of data loading workers (default: 16)
 
   --gpu, --gpu-ids
-    IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas
+
+  IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas
 
   -v, --verbose
-    show information for each <verbose> iterations (default: 0)
+
+  show information for each <verbose> iterations (default: 0)
 
   -b, --batch-size
-    batch size (default: 32)
+
+  batch size (default: 32)
 
   -e, --epochs
-    number of epochs (default: 100)
+
+  number of epochs (default: 100)
 
   --lr, --learning-rate
-    learning rate (default: 0.001)
+
+  learning rate (default: 0.001)
 
   -m, --model
-    model for feature extractor inception/resnetcbam/efficientnetb3 (default: efficientnetb3)
+
+  model for feature extractor inception/resnetcbam/efficientnetb3 (default: efficientnetb3)
 
   -c, --ckpt
-    path to checkpoint directory if resuming training (default: False)
+
+  path to checkpoint directory if resuming training (default: False)
 
   --dd, --data-dir
-    path to directory containing folders named 'train' and 'test'
+
+  path to directory containing folders named 'train' and 'test'
 
   --sd, --save-dir
-    saving directory of .ckpt models (default: ./checkpoints/model)
+
+  saving directory of .ckpt models (default: ./checkpoints/model)
 
   --sf, --save-freq
-    saving frequency of .ckpt models (default: 1)
+
+  saving frequency of .ckpt models (default: 1)
 
 ## License
 MIT License
