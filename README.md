@@ -170,19 +170,19 @@ Options:
 
   --csv-headings
 
-  Heading of image filepath and label columns in csv
+  Heading of image filepath and label columns in csv. Ignored if --csv-labels-path=folder.
 
   --dd, --data-dir
 
-  Directory to images to run evaluation/ prediction
+  Directory to images to run evaluation/ prediction. If --csv-labels-path=folder, directory should contain folders of images named by class name
 
   --cp, --ckpt-path
 
-  Path to saved model checkpoint (default: ./checkpoints/model.pth)
+  Path to saved model checkpoint (default: ./checkpoints/034.ckpt)
 
   --od, --output-dir
 
-  Saving directory of extracted class probabilities csv file
+  Saving directory of extracted class probabilities csv file (default: ./output)
 
 
 ### Run Training
@@ -195,15 +195,15 @@ python train_wsdan.py
 Options:
   -j , --workers
 
-  Number of data loading workers (default: 16)
+  Number of data loading workers (default: n_cpus)
 
   --gpu, --gpu-ids
 
-  IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas
+  IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas (default: 0)
 
   -v, --verbose
 
-  Show information for each <verbose> iterations (default: 0)
+  Show information for each <verbose> batches. Set to zero to only show information every epoch (default: 0)
 
   -b, --batch-size
 
@@ -223,11 +223,11 @@ Options:
 
   -c, --ckpt
 
-  Path to checkpoint directory if resuming training (default: False)
+  Path to checkpoint file if resuming training (default: False)
 
   --dd, --data-dir
 
-  Path to directory containing folders named 'train' and 'test'
+  Path to directory containing folders named 'train' and 'test', each containing folders of images named by class name
 
   --sd, --save-dir
 

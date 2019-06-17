@@ -4,6 +4,7 @@ import logging
 import warnings
 from pathlib import Path
 from optparse import OptionParser
+from multiprocessing import cpu_count
 
 import numpy as np
 from PIL import Image
@@ -26,8 +27,8 @@ image_size = (512, 512)
 
 def parse_args():
     parser = OptionParser()
-    parser.add_option('-j', '--workers', dest='workers', default=16, type='int',
-                      help='number of data loading workers (default: 16)')
+    parser.add_option('-j', '--workers', dest='workers', default=cpu_count(), type='int',
+                      help='number of data loading workers (default: n_cpus)')
     parser.add_option('--gpu', '--gpu-ids', dest='gpu_ids', default='0',
                       help='IDs of gpu(s) to use in inference, multiple gpus should be seperated with commas')
     parser.add_option('-v', '--verbose', dest='verbose', default=0, type='int',
@@ -43,7 +44,7 @@ def parse_args():
                       help='model for feature extractor (inception/resnetcbam/efficientnetb3')
     
     parser.add_option('-c', '--ckpt', dest='ckpt', default=False,
-                      help='path to checkpoint directory if resuming training (default: False)')
+                      help='path to checkpoint file if resuming training (default: False)')
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='',
                       help="path to directory containing folders named 'train' and 'test'")
     parser.add_option('--sd', '--save-dir', dest='save_dir', default=f'./checkpoints/model',

@@ -51,8 +51,8 @@ def parse_args():
 
     parser.add_option('--dd', '--data-dir', dest='data_dir', default='data',
                       help='directory to images to run evaluation/ prediction')
-    parser.add_option('--cp', '--ckpt-path', dest='ckpt_path', default='./checkpoints/model.pth',
-                      help='Path to saved model checkpoint (default: ./checkpoints/model.pth)')
+    parser.add_option('--cp', '--ckpt-path', dest='ckpt_path', default='./checkpoints/034.ckpt',
+                      help='Path to saved model checkpoint (default: ./checkpoints/034.ckpt)')
     parser.add_option('--od', '--output-dir', dest='output_dir', default='./output',
                       help='saving directory of extracted class probabilities csv file')
     (options, args) = parser.parse_args()
