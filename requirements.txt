@@ -6,7 +6,7 @@ keras==2.2.4
 keras-applications==1.0.7
 keras-metrics==1.1.0
 keras-preprocessing==1.0.9
-tensorflow==1.13.1
+tensorflow==2.9.3
 pytorch==1.1.0
 torchvision==0.2.2
 scipy==1.2.1
